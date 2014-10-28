@@ -50,9 +50,15 @@ echo 'MP email: ' . $mp_obj->person->{'contact-details'}->{'email-addresses'}[0]
 $website = $mp_obj->person->{'contact-details'}->{'websites'}[0]->url;
 echo 'MP website: <a href="' . $website . '">' . $website . '</a><br/>';
 
-$image = $mp_obj->person->image;
+if(isset($mp_obj->person->image)){
+	$image = $mp_obj->person->image;
+}
+else{
+	//give us a mystery man
+	$image = 'http://blogtimenow.com/images/creating-custom-default-gravatar-wordpress.jpg';
+}
 
-if(!$image) $image = 'http://blogtimenow.com/images/creating-custom-default-gravatar-wordpress.jpg';
+
 echo 'MP image: <img src="' . $image . '">';
 
 ?>

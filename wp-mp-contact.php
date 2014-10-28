@@ -44,8 +44,50 @@ if (class_exists("GFForms")) {
 
         public function init(){
             parent::init();
+            
+            //Add custom text to the bottom of the form
             add_filter("gform_submit_button", array($this, "form_submit_button"), 10, 2);
+
+            if(is_admin()){
+                //Add a MP Contact Search button
+                add_filter( 'gform_add_field_buttons' , array($this, 'add_mp_contact_field'));
+
+                //Add the fields to the new field
+                add_action( "gform_field_input" , "mp_contact_field_settings", 10, 5 );
+                // add_action( 'gform_field_standard_settings' , array($this , 'mp_contact_field_settings' ), 10, 2);
+
+                // Adds title to GF custom field
+                add_filter( 'gform_field_type_title' , 'mp_contact_title' );
+                
+                function mp_contact_title( $field_type ) {
+                    if ( $field_type == 'mp_contact' )
+                    return __( 'MP Contact Postcode Search' , 'gravityformsmpcontact' );
+                    // return 'wow';
+                }
+
+                function mp_contact_field_settings ( $input, $field, $value, $lead_id, $form_id ){
+                    if ( $field["type"] == "mp_contact" ) {
+                        // $max_chars = "";
+                        
+                        // if(!IS_ADMIN && !empty($field["maxLength"]) && is_numeric($field["maxLength"]))
+                       
+                        // $max_chars = self::get_counter_script($form_id, $field_id, $field["maxLength"]);
+                       
+                        // $input_name = $form_id .’_’ . $field["id"];
+                       
+                        // $tabindex = GFCommon::get_tabindex();
+                        
+                        // $css = isset( $field['cssClass'] ) ? $field['cssClass'] : ”;
+                        
+                        // return sprintf("<div class=’ginput_container’><textarea readonly name=’input_%s’ id=’%s’ class=’textarea gform_tos %s’ $tabindex rows=’10’ cols=’50’>%s</textarea></div>{$max_chars}", $field["id"], ‘tos-‘.$field['id'] , $field["type"] . ‘ ‘ . esc_attr( $css ) . ‘ ‘ . $field['size'] , esc_html($value));
+                        return 'wow';
+                    }
+                    return $input;
+                }
+            }
         }
+
+        
 
         // Add the text in the plugin settings to the bottom of the form if enabled for this form
         function form_submit_button($button, $form){
@@ -218,11 +260,11 @@ if (class_exists("GFForms")) {
                     "title"  => "Simple Add-On Settings",
                     "fields" => array(
                         array(
-                            "name"    => "mytextbox",
-                            "tooltip" => "This is the tooltip",
-                            "label"   => "This is the label",
+                            "name"    => "twfy_api_key",
+                            "tooltip" => 'WP MP Contact is powered by They Work for You (TWFY) and The Guardian. TWYFI needs an API key – you can get one at <a href="http://www.theyworkforyou.com/api/key">http://www.theyworkforyou.com/api/key</a>',
+                            "label"   => "TWFY API key",
                             "type"    => "text",
-                            "class"   => "small",
+                            "class"   => "medium",
                             "feedback_callback" => array($this, "is_valid_setting")
                         )
                     )
@@ -233,6 +275,16 @@ if (class_exists("GFForms")) {
         public function is_valid_setting($value){
             return strlen($value) < 10;
         }
+
+        // public function mp_contact_field_settings($position, $form_id){
+        //     //Field innards here
+
+        //     //create settings on position 25 (right after Field Label)
+        //     if ($position == 25) {
+        //       echo 'wow';
+        //     }
+        // }
+
 
         // public function scripts() {
         //     $scripts = array(
@@ -273,9 +325,20 @@ if (class_exists("GFForms")) {
         //     return array_merge(parent::styles(), $styles);
         // }
 
+        public function add_mp_contact_field($field_groups) { //Was public static function
 
+            foreach ($field_groups as &$group) {
+                if ($group["name"] == "advanced_fields") {
+                    $group["fields"][] = array("class" => "button", "value" => __("MP Contact", "gravityformsmpcontact"), "onclick" => "StartAddField('mp_contact');");
+                    break;
+                }
+            }
+
+            return $field_groups;
+        }
 
     }
+
 
     new GF_WP_MP_Contact();
 }
