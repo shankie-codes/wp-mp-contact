@@ -44,50 +44,56 @@ if (class_exists("GFForms")) {
 
         public function init(){
             parent::init();
+
+            //Load translations
+            load_plugin_textdomain('gravityformsmpcontact', FALSE, '/gravityformsmpcontact/languages');
             
             //Add custom text to the bottom of the form
-            add_filter("gform_submit_button", array($this, "form_submit_button"), 10, 2);
+            // add_filter("gform_submit_button", array($this, "form_submit_button"), 10, 2);
 
-            if(is_admin()){
-                //Add a MP Contact Search button
-                add_filter( 'gform_add_field_buttons' , array($this, 'add_mp_contact_field'));
+            
+            //Add a MP Contact Search button
+            add_filter( 'gform_add_field_buttons' , array($this, 'add_mp_contact_field'));
 
-                //Add the fields to the new field
-                add_action( "gform_field_input" , "mp_contact_field_settings", 10, 5 );
-                // add_action( 'gform_field_standard_settings' , array($this , 'mp_contact_field_settings' ), 10, 2);
+            //Add the fields to the new field
+            add_action( "gform_field_input" , "mp_contact_field_settings", 10, 5 );
+            // add_action( 'gform_field_standard_settings' , array($this , 'mp_contact_field_settings' ), 10, 2);
 
-                // Adds title to GF custom field
-                add_filter( 'gform_field_type_title' , 'mp_contact_title' );
-                
-                function mp_contact_title( $field_type ) {
-                    if ( $field_type == 'mp_contact' )
-                    return __( 'MP Contact Postcode Search' , 'gravityformsmpcontact' );
-                    // return 'wow';
+            // Adds title to GF custom field
+            add_filter( 'gform_field_type_title' , 'mp_contact_title' );
+
+            //Add form JS
+            add_action("gform_editor_js", array($this,'editor_script'));
+            
+            function mp_contact_title( $field_type ) {
+                if ( $field_type == 'mp_contact' )
+                return __( 'MP Contact Postcode Search' , 'gravityformsmpcontact' );
+                // return 'wow';
+            }
+
+            function mp_contact_field_settings ( $input, $field, $value, $lead_id, $form_id ){
+                if ( $field["type"] == "mp_contact" ) {
+                    ob_start();
+                    ?>
+                    <div class="ginput_container">
+                        Postcode lookup for the WP MP Contact add-on.
+                    </div>
+                    <?php
                 }
-
-                function mp_contact_field_settings ( $input, $field, $value, $lead_id, $form_id ){
-                    if ( $field["type"] == "mp_contact" ) {
-                        // $max_chars = "";
-                        
-                        // if(!IS_ADMIN && !empty($field["maxLength"]) && is_numeric($field["maxLength"]))
-                       
-                        // $max_chars = self::get_counter_script($form_id, $field_id, $field["maxLength"]);
-                       
-                        // $input_name = $form_id .’_’ . $field["id"];
-                       
-                        // $tabindex = GFCommon::get_tabindex();
-                        
-                        // $css = isset( $field['cssClass'] ) ? $field['cssClass'] : ”;
-                        
-                        // return sprintf("<div class=’ginput_container’><textarea readonly name=’input_%s’ id=’%s’ class=’textarea gform_tos %s’ $tabindex rows=’10’ cols=’50’>%s</textarea></div>{$max_chars}", $field["id"], ‘tos-‘.$field['id'] , $field["type"] . ‘ ‘ . esc_attr( $css ) . ‘ ‘ . $field['size'] , esc_html($value));
-                        return 'wow';
-                    }
-                    return $input;
-                }
+                return ob_get_clean();
             }
         }
 
-        
+        function editor_script(){
+            ?>
+            <script type='text/javascript'>
+
+                //adding setting to signature fields
+                fieldSettings["mp_contact"] = ".error_message_setting, .label_setting, .admin_label_setting, .rules_setting, .visibility_setting, .description_setting, .css_class_setting";
+
+            </script>
+            <?php
+        }
 
         // Add the text in the plugin settings to the bottom of the form if enabled for this form
         function form_submit_button($button, $form){
@@ -336,7 +342,6 @@ if (class_exists("GFForms")) {
 
             return $field_groups;
         }
-
     }
 
 
