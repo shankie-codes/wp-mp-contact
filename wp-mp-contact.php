@@ -50,38 +50,77 @@ if (class_exists("GFForms")) {
             
             //Add custom text to the bottom of the form
             // add_filter("gform_submit_button", array($this, "form_submit_button"), 10, 2);
-
             
             //Add a MP Contact Search button
-            add_filter( 'gform_add_field_buttons' , array($this, 'add_mp_contact_field'));
+            add_filter( 'gform_add_field_buttons' , array( $this , 'add_mp_contact_field' ));
 
             //Add the fields to the new field
-            add_action( "gform_field_input" , "mp_contact_field_settings", 10, 5 );
+            add_action( 'gform_field_input' , array( $this , 'mp_contact_field_input' ), 10, 5 );
+            
+            
             // add_action( 'gform_field_standard_settings' , array($this , 'mp_contact_field_settings' ), 10, 2);
 
             // Adds title to GF custom field
-            add_filter( 'gform_field_type_title' , 'mp_contact_title' );
+            add_filter( 'gform_field_type_title' , array( $this, 'mp_contact_title' ) );
 
             //Add form JS
             add_action("gform_editor_js", array($this,'editor_script'));
             
-            function mp_contact_title( $field_type ) {
-                if ( $field_type == 'mp_contact' )
-                return __( 'MP Contact Postcode Search' , 'gravityformsmpcontact' );
-                // return 'wow';
-            }
+        }
 
-            function mp_contact_field_settings ( $input, $field, $value, $lead_id, $form_id ){
-                if ( $field["type"] == "mp_contact" ) {
-                    ob_start();
-                    ?>
-                    <div class="ginput_container">
-                        Postcode lookup for the WP MP Contact add-on.
-                    </div>
-                    <?php
-                }
-                return ob_get_clean();
-            }
+        // function mp_contact_field_settings (){
+
+        // }
+
+        function mp_contact_field_input ( $input, $field, $value, $lead_id, $form_id ){
+            
+            if($field['type'] != 'mp_contact')
+                return $input;
+
+            $input_name = $form_id .'_' . $field["id"];
+
+            $tabindex = GFCommon::get_tabindex();
+
+            $css = isset( $field['cssClass'] ) ? $field['cssClass'] : '';
+
+            ob_start();
+            ?>
+
+            <div class="ginput_container ginput_complex" id="input_<?php echo $field['id'] ?>">
+                
+                <span class="ginput_full" id="input_<?php echo $field['id'] ?>_1_container">
+                    
+                    <input type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['id'] ?>_1" class="input gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?>>
+                        <?php echo esc_html($value) ?>
+                    </input>
+
+                    <label for="input_<?php echo $field['id'] ?>_1" id="input_<?php echo $field['id'] ?>_1_label"><?php _e( 'UK Postcode' , 'gravityformsmpcontact' ) ?></label>
+
+                </span>
+
+                <span class="ginput_full" id="input_<?php echo $field['id'] ?>_2_container">
+                    
+                    <textarea name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['id'] ?>_2" class="textarea gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10">
+                        <?php echo esc_html($value) ?>
+                    </textarea>
+
+                    <label for="input_<?php echo $field['id'] ?>_2" id="input_<?php echo $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
+
+                </span>
+
+
+
+            </div>
+
+            <?php
+            return ob_get_clean();
+        }
+
+
+        function mp_contact_title( $field_type ) {
+            if ( $field_type == 'mp_contact' )
+            return __( 'MP Contact Postcode Search' , 'gravityformsmpcontact' );
+            // return 'wow';
         }
 
         function editor_script(){
@@ -110,127 +149,127 @@ if (class_exists("GFForms")) {
             // echo 'This page appears in the Forms menu';
         // }
 
-        public function form_settings_fields($form) {
-            return array(
-                array(
-                    "title"  => "Campaign Settings Fields",
-                    "fields" => array(
-                        array(
-                            "label"   => "My checkbox",
-                            "type"    => "checkbox",
-                            "name"    => "enabled",
-                            "tooltip" => "This is the tooltip",
-                            "choices" => array(
-                                array(
-                                    "label" => "Enabled",
-                                    "name"  => "enabled"
-                                )
-                            )
-                        ),
-                        array(
-                            "label"   => "My checkboxes",
-                            "type"    => "checkbox",
-                            "name"    => "checkboxgroup",
-                            "tooltip" => "This is the tooltip",
-                            "choices" => array(
-                                array(
-                                    "label" => "First Choice",
-                                    "name"  => "first"
-                                ),
-                                array(
-                                    "label" => "Second Choice",
-                                    "name"  => "second"
-                                ),
-                                array(
-                                    "label" => "Third Choice",
-                                    "name"  => "third"
-                                )
-                            )
-                        ),
-                        array(
-                            "label"   => "My Radio Buttons",
-                            "type"    => "radio",
-                            "name"    => "myradiogroup",
-                            "tooltip" => "This is the tooltip",
-                            "choices" => array(
-                                array(
-                                    "label" => "First Choice"
-                                ),
-                                array(
-                                    "label" => "Second Choice"
-                                ),
-                                array(
-                                    "label" => "Third Choice"
-                                )
-                            )
-                        ),
-                        array(
-                            "label"   => "My Horizontal Radio Buttons",
-                            "type"    => "radio",
-                            "horizontal" => true,
-                            "name"    => "myradiogrouph",
-                            "tooltip" => "This is the tooltip",
-                            "choices" => array(
-                                array(
-                                    "label" => "First Choice"
-                                ),
-                                array(
-                                    "label" => "Second Choice"
-                                ),
-                                array(
-                                    "label" => "Third Choice"
-                                )
-                            )
-                        ),
-                        array(
-                            "label"   => "My Dropdown",
-                            "type"    => "select",
-                            "name"    => "mydropdown",
-                            "tooltip" => "This is the tooltip",
-                            "choices" => array(
-                                array(
-                                    "label" => "First Choice",
-                                    "value" => "first"
-                                ),
-                                array(
-                                    "label" => "Second Choice",
-                                    "value" => "second"
-                                ),
-                                array(
-                                    "label" => "Third Choice",
-                                    "value" => "third"
-                                )
-                            )
-                        ),
-                        array(
-                            "label"   => "My Text Box",
-                            "type"    => "text",
-                            "name"    => "mytext",
-                            "tooltip" => "This is the tooltip",
-                            "class"   => "medium",
-                            "feedback_callback" => array($this, "is_valid_setting")
-                        ),
-                        array(
-                            "label"   => "My Text Area",
-                            "type"    => "textarea",
-                            "name"    => "mytextarea",
-                            "tooltip" => "This is the tooltip",
-                            "class"   => "medium merge-tag-support mt-position-right"
-                        ),
-                        array(
-                            "label"   => "My Hidden Field",
-                            "type"    => "hidden",
-                            "name"    => "myhidden"
-                        ),
-                        array(
-                            "label"   => "My Custom Field",
-                            "type"    => "my_custom_field_type",
-                            "name"    => "my_custom_field"
-                        )
-                    )
-                )
-            );
-        }
+        // public function form_settings_fields($form) {
+        //     return array(
+        //         array(
+        //             "title"  => "Campaign Settings Fields",
+        //             "fields" => array(
+        //                 array(
+        //                     "label"   => "My checkbox",
+        //                     "type"    => "checkbox",
+        //                     "name"    => "enabled",
+        //                     "tooltip" => "This is the tooltip",
+        //                     "choices" => array(
+        //                         array(
+        //                             "label" => "Enabled",
+        //                             "name"  => "enabled"
+        //                         )
+        //                     )
+        //                 ),
+        //                 array(
+        //                     "label"   => "My checkboxes",
+        //                     "type"    => "checkbox",
+        //                     "name"    => "checkboxgroup",
+        //                     "tooltip" => "This is the tooltip",
+        //                     "choices" => array(
+        //                         array(
+        //                             "label" => "First Choice",
+        //                             "name"  => "first"
+        //                         ),
+        //                         array(
+        //                             "label" => "Second Choice",
+        //                             "name"  => "second"
+        //                         ),
+        //                         array(
+        //                             "label" => "Third Choice",
+        //                             "name"  => "third"
+        //                         )
+        //                     )
+        //                 ),
+        //                 array(
+        //                     "label"   => "My Radio Buttons",
+        //                     "type"    => "radio",
+        //                     "name"    => "myradiogroup",
+        //                     "tooltip" => "This is the tooltip",
+        //                     "choices" => array(
+        //                         array(
+        //                             "label" => "First Choice"
+        //                         ),
+        //                         array(
+        //                             "label" => "Second Choice"
+        //                         ),
+        //                         array(
+        //                             "label" => "Third Choice"
+        //                         )
+        //                     )
+        //                 ),
+        //                 array(
+        //                     "label"   => "My Horizontal Radio Buttons",
+        //                     "type"    => "radio",
+        //                     "horizontal" => true,
+        //                     "name"    => "myradiogrouph",
+        //                     "tooltip" => "This is the tooltip",
+        //                     "choices" => array(
+        //                         array(
+        //                             "label" => "First Choice"
+        //                         ),
+        //                         array(
+        //                             "label" => "Second Choice"
+        //                         ),
+        //                         array(
+        //                             "label" => "Third Choice"
+        //                         )
+        //                     )
+        //                 ),
+        //                 array(
+        //                     "label"   => "My Dropdown",
+        //                     "type"    => "select",
+        //                     "name"    => "mydropdown",
+        //                     "tooltip" => "This is the tooltip",
+        //                     "choices" => array(
+        //                         array(
+        //                             "label" => "First Choice",
+        //                             "value" => "first"
+        //                         ),
+        //                         array(
+        //                             "label" => "Second Choice",
+        //                             "value" => "second"
+        //                         ),
+        //                         array(
+        //                             "label" => "Third Choice",
+        //                             "value" => "third"
+        //                         )
+        //                     )
+        //                 ),
+        //                 array(
+        //                     "label"   => "My Text Box",
+        //                     "type"    => "text",
+        //                     "name"    => "mytext",
+        //                     "tooltip" => "This is the tooltip",
+        //                     "class"   => "medium",
+        //                     "feedback_callback" => array($this, "is_valid_setting")
+        //                 ),
+        //                 array(
+        //                     "label"   => "My Text Area",
+        //                     "type"    => "textarea",
+        //                     "name"    => "mytextarea",
+        //                     "tooltip" => "This is the tooltip",
+        //                     "class"   => "medium merge-tag-support mt-position-right"
+        //                 ),
+        //                 array(
+        //                     "label"   => "My Hidden Field",
+        //                     "type"    => "hidden",
+        //                     "name"    => "myhidden"
+        //                 ),
+        //                 array(
+        //                     "label"   => "My Custom Field",
+        //                     "type"    => "my_custom_field_type",
+        //                     "name"    => "my_custom_field"
+        //                 )
+        //             )
+        //         )
+        //     );
+        // }
 
         public function settings_my_custom_field_type(){
             ?>
@@ -263,7 +302,7 @@ if (class_exists("GFForms")) {
         public function plugin_settings_fields() {
             return array(
                 array(
-                    "title"  => "Simple Add-On Settings",
+                    "title"  => "MP Contact Settings",
                     "fields" => array(
                         array(
                             "name"    => "twfy_api_key",
