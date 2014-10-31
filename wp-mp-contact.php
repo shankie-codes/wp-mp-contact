@@ -74,13 +74,17 @@ if (class_exists("GFForms")) {
 
         function mp_contact_field_input ( $input, $field, $value, $lead_id, $form_id ){
             
+            //Exit if not the mp_contact field
             if($field['type'] != 'mp_contact')
                 return $input;
 
+            //
             $input_name = $form_id .'_' . $field["id"];
 
+            //Get Gravity's tab index
             $tabindex = GFCommon::get_tabindex();
 
+            //Get any custom CSS classes
             $css = isset( $field['cssClass'] ) ? $field['cssClass'] : '';
 
             ob_start();
