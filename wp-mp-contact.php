@@ -8,10 +8,13 @@
  * Author URI: http://properdesign.rs
  * License: GPL2
  *
- * Acknowledgements: Renewable UK (http://www.renewableuk.com/) for funding the development of this plugin
+ * Acknowledgements: 
+ * Renewable UK (http://www.renewableuk.com/) and Action for Renewables for funding the initial development of this Gravity Forms add-in
+ * WPSmith for the tutorial that got it all started (http://wpsmith.net/2011/plugins/how-to-create-a-custom-form-field-in-gravity-forms-with-a-terms-of-service-form-field-example/)
+ * The Agency for showing how to work with complext fields (http://theagencyonline.co.uk/2014/07/custom-multiple-input-form-for-gravity-fields/)
  */
 
-/*  Copyright 2014  Proper Design  (email : support@properdesign.rs)
+/*  Copyright 2014  Proper Design  (email : hello@properdesign.rs)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -56,26 +59,53 @@ if (class_exists("GFForms")) {
 
             //Add the fields to the new field
             add_action( 'gform_field_input' , array( $this , 'mp_contact_field_input' ), 10, 5 );
-            
-            
-            // add_action( 'gform_field_standard_settings' , array($this , 'mp_contact_field_settings' ), 10, 2);
 
             // Adds title to GF custom field
             add_filter( 'gform_field_type_title' , array( $this, 'mp_contact_title' ) );
 
             //Add form JS
-            add_action("gform_editor_js", array($this,'editor_script'));
-            
+            add_action( "gform_editor_js", array( $this, 'editor_script' ) );
+
+            // set label of field(s), and define inputs
+            add_action( "gform_editor_js_set_default_values", array( $this, 'mp_contact_custom_field_labels' ));
+
+            // Add a script to the display of the particular form only if tos field is being used
+            add_action( 'gform_enqueue_scripts' , array($this, 'mp_contact_gform_enqueue_scripts' )); 
+
+            // set any custom handling for output of our custom field(s) entry
+            add_filter("gform_entry_field_value", array( $this, "gravity_form_custom_field_entry_output" ), 10, 4);           
         }
 
-        // function mp_contact_field_settings (){
+        function gravity_form_custom_field_entry_output($value, $field, $lead, $form){
+        if ($field["type"] == "mp-contact"){
+            $value = '';
 
-        // }
+            echo '<pre>';
+                print_r($lead);
+            echo '</pre>';
+            // foreach($GLOBALS['mp-contact_field_array'] AS $id => $entry){
+            //     $value .= $GLOBALS['mp-contact_field_names_array'][$entry].': '.$lead[$field["id"].'.'.$id]."<br />";
+            // }
+        }
+        return $value;
+        }
+
+        function mp_contact_custom_field_labels(){
+            // this hook is fired in the middle of a switch statement, so we need to add a case for our new field type ?>
+            case "mp-contact" :
+            field.label = "<?php _e("MP Contact", "gravityforms"); ?>"; // setting the default field label
+            field.inputs = [
+                new Input( field.id + 0.1, '<?php echo esc_js(__("postcode", "gravityforms")); ?>'),
+                new Input( field.id + 0.2, '<?php echo esc_js(__("message", "gravityforms")); ?>'),
+            ];
+            break;
+            <?php
+        }
 
         function mp_contact_field_input ( $input, $field, $value, $lead_id, $form_id ){
             
             //Exit if not the mp_contact field
-            if($field['type'] != 'mp_contact')
+            if($field['type'] != 'mp-contact')
                 return $input;
 
             //
@@ -88,41 +118,38 @@ if (class_exists("GFForms")) {
             $css = isset( $field['cssClass'] ) ? $field['cssClass'] : '';
 
             ob_start();
+
+            // echo '<pre>';
+            //     print_r($field);
+            // echo '</pre>';
+
+            // echo '<pre>';
+            //     print_r($value);
+            // echo '</pre>';
             ?>
 
-            <div class="ginput_container ginput_complex" id="input_<?php echo $field['id'] ?>">
+            <div class="ginput_container ginput_complex" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>">
                 
-                <span class="ginput_full" id="input_<?php echo $field['id'] ?>_1_container">
-                    
-                    <input type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['id'] ?>_1" class="input gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?>>
-                        <?php echo esc_html($value) ?>
-                    </input>
-
-                    <label for="input_<?php echo $field['id'] ?>_1" id="input_<?php echo $field['id'] ?>_1_label"><?php _e( 'UK Postcode' , 'gravityformsmpcontact' ) ?></label>
-
+                <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_container">
+                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'UK Postcode' , 'gravityformsmpcontact' ) ?></label>
                 </span>
 
-                <span class="ginput_full" id="input_<?php echo $field['id'] ?>_2_container">
-                    
-                    <textarea name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['id'] ?>_2" class="textarea gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10">
-                        <?php echo esc_html($value) ?>
-                    </textarea>
-
-                    <label for="input_<?php echo $field['id'] ?>_2" id="input_<?php echo $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
-
+                <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_container">
+                    <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" class="textarea gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10"><?php echo $field['defaultValue'] ?></textarea>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
                 </span>
-
-
-
             </div>
 
             <?php
             return ob_get_clean();
+
+            //Possibly change textarea to text to see what happens
         }
 
 
         function mp_contact_title( $field_type ) {
-            if ( $field_type == 'mp_contact' )
+            if ( $field_type == 'mp-contact' )
             return __( 'MP Contact Postcode Search' , 'gravityformsmpcontact' );
             // return 'wow';
         }
@@ -131,21 +158,39 @@ if (class_exists("GFForms")) {
             ?>
             <script type='text/javascript'>
 
-                //adding setting to signature fields
-                fieldSettings["mp_contact"] = ".error_message_setting, .label_setting, .admin_label_setting, .rules_setting, .visibility_setting, .description_setting, .css_class_setting";
+                jQuery(document).ready(function($) {
+                    //adding setting to textarea fields
+                    fieldSettings["mp-contact"] = fieldSettings["textarea"] + ", .tos_setting";
+                });
 
             </script>
             <?php
         }
 
         // Add the text in the plugin settings to the bottom of the form if enabled for this form
-        function form_submit_button($button, $form){
-            $settings = $this->get_form_settings($form);
-            if(isset($settings["enabled"]) && true == $settings["enabled"]){
-                $text = $this->get_plugin_setting("mytextbox");
-                $button = "<div>{$text}</div>" . $button;
+        // function form_submit_button($button, $form){
+        //     $settings = $this->get_form_settings($form);
+        //     if(isset($settings["enabled"]) && true == $settings["enabled"]){
+        //         $text = $this->get_plugin_setting("mytextbox");
+        //         $button = "<div>{$text}</div>" . $button;
+        //     }
+        //     return $button;
+        // }
+        
+        function mp_contact_gform_enqueue_scripts( $form ) {
+            
+            // If MP-Contact is being used, enqueue our front-end scripts
+            // echo '<pre>';
+            //     print_r($form['fields']);
+            // echo '</pre>';
+            foreach ( $form['fields'] as $field ) {
+                
+                if ( ( $field['type'] == 'mp-contact' ) ) {
+                    $url = plugins_url( 'js/functions.js' , __FILE__ );
+                    wp_enqueue_script( 'gform_mp_contact_script', $url , array( 'jquery' ));
+                    break;
+                }
             }
-            return $button;
         }
 
 
@@ -378,7 +423,7 @@ if (class_exists("GFForms")) {
 
             foreach ($field_groups as &$group) {
                 if ($group["name"] == "advanced_fields") {
-                    $group["fields"][] = array("class" => "button", "value" => __("MP Contact", "gravityformsmpcontact"), "onclick" => "StartAddField('mp_contact');");
+                    $group["fields"][] = array("class" => "button", "value" => __("MP Contact", "gravityformsmpcontact"), "onclick" => "StartAddField('mp-contact');");
                     break;
                 }
             }
