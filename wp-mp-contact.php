@@ -9,7 +9,7 @@
  * License: GPL2
  *
  * Acknowledgements: 
- * Renewable UK (http://www.renewableuk.com/) and Action for Renewables for funding the initial development of this Gravity Forms add-in
+ * Renewable UK (http://www.renewableuk.com/) and Action for Renewables (http://www.actionforrenewables.org/) for funding the initial development of this Gravity Forms add-in
  * WPSmith for the tutorial that got it all started (http://wpsmith.net/2011/plugins/how-to-create-a-custom-form-field-in-gravity-forms-with-a-terms-of-service-form-field-example/)
  * The Agency for showing how to work with complext fields (http://theagencyonline.co.uk/2014/07/custom-multiple-input-form-for-gravity-fields/)
  */
@@ -77,17 +77,16 @@ if (class_exists("GFForms")) {
         }
 
         function gravity_form_custom_field_entry_output($value, $field, $lead, $form){
-        if ($field["type"] == "mp-contact"){
-            $value = '';
+            //Make our details appear in the entries list
+            if ($field["type"] == "mp-contact"){
+                $value = '';
 
-            echo '<pre>';
-                print_r($lead);
-            echo '</pre>';
-            // foreach($GLOBALS['mp-contact_field_array'] AS $id => $entry){
-            //     $value .= $GLOBALS['mp-contact_field_names_array'][$entry].': '.$lead[$field["id"].'.'.$id]."<br />";
-            // }
-        }
-        return $value;
+                foreach ($field['inputs'] as $single_field) {
+                    echo $single_field['id'];
+                    $value .= $single_field['label'] . ': ' . $lead[(string)$single_field['id']] . '<br />';
+                }
+            }
+            return $value;
         }
 
         function mp_contact_custom_field_labels(){
