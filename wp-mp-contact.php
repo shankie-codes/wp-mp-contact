@@ -94,8 +94,9 @@ if (class_exists("GFForms")) {
             case "mp-contact" :
             field.label = "<?php _e("MP Contact", "gravityforms"); ?>"; // setting the default field label
             field.inputs = [
-                new Input( field.id + 0.1, '<?php echo esc_js(__("postcode", "gravityforms")); ?>'),
-                new Input( field.id + 0.2, '<?php echo esc_js(__("message", "gravityforms")); ?>'),
+                new Input( field.id + 0.1, '<?php echo esc_js(__("UK Postcode", "gravityforms")); ?>'),
+                new Input( field.id + 0.2, '<?php echo esc_js(__("Message to MP", "gravityforms")); ?>'),
+                new Input( field.id + 0.3, '<?php echo esc_js(__("MP Email Address", "gravityforms")); ?>'),
             ];
             break;
             <?php
@@ -118,26 +119,31 @@ if (class_exists("GFForms")) {
 
             ob_start();
 
-            // echo '<pre>';
-            //     print_r($field);
-            // echo '</pre>';
-
-            // echo '<pre>';
-            //     print_r($value);
-            // echo '</pre>';
             ?>
 
             <div class="ginput_container ginput_complex" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>">
                 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_container">
-                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact postcode <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'UK Postcode' , 'gravityformsmpcontact' ) ?></label>
                 </span>
+
+                <?php if(false == is_admin()){ ?>
+                    <!-- Button to initiate AJAX call to return MP email address -->
+                    <a href="#" class="button wp-mp-contact lookup-mp"><?php _e( 'Lookup MP', 'gravityformsmpcontact') ?></a>
+                <?php } ?>
 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_container">
                     <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" class="textarea gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10"><?php echo $field['defaultValue'] ?></textarea>
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
                 </span>
+
+                <input hidden type="text" name="input_<?php echo $field['id'] ?>.3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                
+                <?php if(false == is_admin()){ ?>
+                    <!-- Modal window to receive AJAX response -->
+                    <div id="modal-window"></div>
+                <?php } ?>
             </div>
 
             <?php
@@ -159,7 +165,7 @@ if (class_exists("GFForms")) {
 
                 jQuery(document).ready(function($) {
                     //adding setting to textarea fields
-                    fieldSettings["mp-contact"] = fieldSettings["textarea"] + ", .tos_setting";
+                    fieldSettings["mp-contact"] = fieldSettings["textarea"];
                 });
 
             </script>
@@ -178,15 +184,22 @@ if (class_exists("GFForms")) {
         
         function mp_contact_gform_enqueue_scripts( $form ) {
             
-            // If MP-Contact is being used, enqueue our front-end scripts
-            // echo '<pre>';
-            //     print_r($form['fields']);
-            // echo '</pre>';
+            // If MP-Contact is being used, enqueue our front-end scripts and styles
+        
             foreach ( $form['fields'] as $field ) {
                 
                 if ( ( $field['type'] == 'mp-contact' ) ) {
-                    $url = plugins_url( 'js/functions.js' , __FILE__ );
-                    wp_enqueue_script( 'gform_mp_contact_script', $url , array( 'jquery' ));
+                    
+                    // Enqueue front-end scripts
+                    wp_enqueue_script( 'gform_mp_contact_script', plugins_url( 'js/functions.js' , __FILE__ ) , array( 'jquery' ));
+
+                    // Enqueue front-end styles
+                    wp_enqueue_style( 'gform_mp_contact_style', plugins_url( 'css/style.css' , __FILE__ ));
+
+                    // Enqueue jQuery (you can't be too sure) and jQuery UI
+                    wp_enqueue_script( 'jquery' );
+                    wp_enqueue_script( 'jquery-ui-position' );
+
                     break;
                 }
             }
