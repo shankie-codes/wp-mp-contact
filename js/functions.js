@@ -15,14 +15,48 @@ jQuery(document).ready(function($){
 	$('#modal-window').prepend(modalCloser, modalContent);
 
 	// Bind an AJAX call to the to the button
-	$('.lookup-mp').on('click', function(){
+	$('.lookup-mp').on('click', function(event){
 
-		// Get the postcode
-		postcode = ($(this).parent().find('.postcode').val());
+		event.preventDefault();
 
-		openModal(postcode);
+		results = $('.lookup-results');
+
+		if ($('.lookup-results').is(":hidden")){
+			// If lookup results aren't visible, i.e. we've not already done a search
+			
+			// Get the postcode from the parent element
+			postcode = ($(this).parent().find('.postcode').val());
+			
+			// Clear existing search results
+			$('.lookup-output').each(function(){
+				$(this).removeAttr('value');
+				$(this).empty();
+			});
+
+			// Add our search results
+			results.append(postcode);
+
+			//Reveal our results
+			results.slideDown();
+
+			// A search has been executed. Change the button text and start over
+			$('.lookup-mp').text('Start Over');
+		}
+		
+		else{
+			// Hide the results panel
+			results.slideUp();
+
+			//Change the button text
+			$('.lookup-mp').text('Lookup MP');
+
+			// Clear the search
+
+		}
+
+
+		// openModal(postcode);
 	});
-
 	
 });
 

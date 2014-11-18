@@ -121,7 +121,7 @@ if (class_exists("GFForms")) {
 
             ?>
 
-            <div class="ginput_container ginput_complex" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>">
+            <div class="ginput_container ginput_complex wpmpc" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>">
                 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_container">
                     <input disabled type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact postcode <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
@@ -131,6 +131,38 @@ if (class_exists("GFForms")) {
                 <?php if(false == is_admin()){ ?>
                     <!-- Button to initiate AJAX call to return MP email address -->
                     <a href="#" class="button wp-mp-contact lookup-mp"><?php _e( 'Lookup MP', 'gravityformsmpcontact') ?></a>
+                    
+                    <div class="lookup-results">
+                      <div class="message"></div>
+                      <h3>Your MP</h3>
+                      <div class="mp-container">
+                        <div class="mp-photo lookup-output">
+                          <img src="http://placehold.it/100x120" alt="" />
+                        </div>
+                        <div class="mp-details">
+                          <div class="detail-item">
+                            <div class="label">Name:</div>
+                            <div class="detail lookup-output">Jenny Willott</div>
+                          </div>
+                          <div class="detail-item">
+                            <div class="label">E-mail:</div>
+                            <div class="detail lookup-output">
+                                <a href="mailto:jenny@jennywillott.com">jenny@jennywillott.com</a>
+                            </div>
+                          </div>   
+                          <div class="detail-item">
+                            <div class="label">Website:</div>
+                            <div class="detail lookup-output">
+                                <a href="http://jennywillott.com">http://jennywillott.com</a>
+                            </div>
+                          </div>  
+                        </div>
+                      </div>
+                      <div class="mp-email">
+                        <label for="email">Send my message to:</label>
+                        <input name="email" id="email" class="email lookup-output" type="email" value="jenny@jennywillott.com"/>
+                      </div>
+                    </div>
                 <?php } ?>
 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_container">
@@ -139,11 +171,7 @@ if (class_exists("GFForms")) {
                 </span>
 
                 <input hidden type="text" name="input_<?php echo $field['id'] ?>.3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
-                
-                <?php if(false == is_admin()){ ?>
-                    <!-- Modal window to receive AJAX response -->
-                    <div id="modal-window"></div>
-                <?php } ?>
+            
             </div>
 
             <?php

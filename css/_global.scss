@@ -1,0 +1,6 @@
+$color-red:   #DC3C28;
+$color-red-dark: adjust-lightness($color-red, -10);
+$color-red-light: adjust-lightness($color-red, +20);
+
+$color-grey: #e0e0e0;
+$color-grey-light: adjust-lightness($color-grey, +10);

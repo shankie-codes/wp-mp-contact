@@ -54,3 +54,81 @@
   /* line 21, _buttons.scss */
   .button .wp-mp-contact:visited {
     color: white; }
+
+/* line 1, _lookup.scss */
+.lookup-results {
+  background-color: #e0e0e0;
+  padding: 1em;
+  margin: 1em 0; }
+  /* line 8, _lookup.scss */
+  .lookup-results h3 {
+    margin-top: 0; }
+  /* line 12, _lookup.scss */
+  .lookup-results .mp-photo {
+    width: 100px;
+    height: 120px; }
+    /* line 17, _lookup.scss */
+    .lookup-results .mp-photo img {
+      max-width: 100%;
+      max-height: 100%; }
+  /* line 23, _lookup.scss */
+  .lookup-results .message {
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: #ea8c80;
+    border: 1px solid #b42e1d; }
+  /* line 30, _lookup.scss */
+  .lookup-results .message:empty {
+    display: none; }
+  /* line 34, _lookup.scss */
+  .lookup-results .mp-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row; }
+  /* line 39, _lookup.scss */
+  .lookup-results .mp-details {
+    margin-left: 1em;
+    background-color: white;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 1em;
+    width: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between; }
+  /* line 49, _lookup.scss */
+  .lookup-results .detail-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row; }
+  /* line 54, _lookup.scss */
+  .lookup-results .label {
+    -webkit-flex-basis: 5em;
+    -ms-flex-preferred-size: 5em;
+    flex-basis: 5em; }
+  /* line 58, _lookup.scss */
+  .lookup-results .mp-email {
+    margin-top: 1em; }
+  /* line 62, _lookup.scss */
+  .lookup-results input {
+    max-width: 20em; }
