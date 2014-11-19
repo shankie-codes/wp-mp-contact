@@ -55,11 +55,21 @@
   .button .wp-mp-contact:visited {
     color: white; }
 
+/* line 26, _buttons.scss */
+.gform_button[disabled] {
+  opacity: 0.25; }
+
+/* line 30, _buttons.scss */
+.lookup-mp {
+  display: inline-block;
+  margin: 1em 1em 1em 0; }
+
 /* line 1, _lookup.scss */
 .lookup-results {
   background-color: #e0e0e0;
   padding: 1em;
-  margin: 1em 0; }
+  margin: 1em 0;
+  display: none; }
   /* line 8, _lookup.scss */
   .lookup-results h3 {
     margin-top: 0; }
@@ -131,4 +141,5 @@
     margin-top: 1em; }
   /* line 62, _lookup.scss */
   .lookup-results input {
-    max-width: 20em; }
+    max-width: 20em;
+    margin-bottom: 1em; }

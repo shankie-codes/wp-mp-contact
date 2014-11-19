@@ -1,25 +1,60 @@
 /***** Front-end scripts for WP-MP-Contact *********/
 
 jQuery(document).ready(function($){
+
+	/* Define some handy variables */
+	var gform = $('.wpmpc').parents('.gform_wrapper');
+	var gformId = gform.attr('id').slice(-1);
+	var gformSubmit = gform.find('[id^=gform_submit_button]');
+	var email = $('input.email');
+	var results = $('.lookup-results');
 	
 	// Enable the form fields on the front end
 	$('.mp-contact').each(function(){
 		$(this).prop('disabled', false);
 	});
 
-	// Add a closer to the modal window
+	/** Add a closer to the modal window **/
 	// Create the .modal-close and .modal-content
 	var modalCloser = '<span class="modal-close">&times;</span>';
 	var modalContent = '<div class="modal-content"></div>';
 
+	//Prepend the closer
 	$('#modal-window').prepend(modalCloser, modalContent);
 
-	// Bind an AJAX call to the to the button
+	/* Move a the 'message' label somewhere more appropriate */
+	$(".lookup-results").has("input[type='email'],input[type='text'],input[type='password'],select,textarea").find("label").each(function() {
+	    var e = $(this), fielddesc = $("<div>").append(e.clone()).remove().html();
+	    e.siblings("input,select,textarea").before(fielddesc);
+	    e.remove();
+	});
+
+	/* Disable the submit button unless .email has a value*/
+	// Disable it by default
+	gformSubmit.attr('disabled', true);
+
+	// Bind a function to detect when it changes
+	email.keyup(function(){
+		if($(this).attr("value").length !== 0){
+			gformSubmit.attr('disabled', false);
+		}
+		else{
+			gformSubmit.attr('disabled', true);
+		}
+	});
+
+	// $('.sendButton').attr('disabled',true);
+	//     $('#message').keyup(function(){
+	//         if($(this).val().length !=0)
+	//             $('.sendButton').attr('disabled', false);            
+	//         else
+	//             $('.sendButton').attr('disabled',true);
+	//     })
+
+	/** Bind an AJAX call to the to the button **/
 	$('.lookup-mp').on('click', function(event){
 
 		event.preventDefault();
-
-		results = $('.lookup-results');
 
 		if ($('.lookup-results').is(":hidden")){
 			// If lookup results aren't visible, i.e. we've not already done a search
@@ -36,6 +71,11 @@ jQuery(document).ready(function($){
 			// Add our search results
 			results.append(postcode);
 
+			// Enable the submit button if there's
+			if(email.attr("value").length !== 0){
+				gformSubmit.attr('disabled', false);
+			}
+
 			//Reveal our results
 			results.slideDown();
 
@@ -51,6 +91,7 @@ jQuery(document).ready(function($){
 			$('.lookup-mp').text('Lookup MP');
 
 			// Clear the search
+			$('.postcode').removeAttr('value');
 
 		}
 

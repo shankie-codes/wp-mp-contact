@@ -137,21 +137,21 @@ if (class_exists("GFForms")) {
                       <h3>Your MP</h3>
                       <div class="mp-container">
                         <div class="mp-photo lookup-output">
-                          <img src="http://placehold.it/100x120" alt="" />
+                          <img src="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2009/5/14/1242300471314/Jenny-Willott-MP-001.jpg" alt="" />
                         </div>
                         <div class="mp-details">
                           <div class="detail-item">
-                            <div class="label">Name:</div>
+                            <div class="label"><?php _e( 'Name', 'gravityformsmpcontact' ); ?>:</div>
                             <div class="detail lookup-output">Jenny Willott</div>
                           </div>
                           <div class="detail-item">
-                            <div class="label">E-mail:</div>
+                            <div class="label"><?php _e( 'E-mail', 'gravityformsmpcontact' ); ?>:</div>
                             <div class="detail lookup-output">
                                 <a href="mailto:jenny@jennywillott.com">jenny@jennywillott.com</a>
                             </div>
                           </div>   
                           <div class="detail-item">
-                            <div class="label">Website:</div>
+                            <div class="label"><?php _e( 'E-mail', 'gravityformsmpcontact' ); ?>:</div>
                             <div class="detail lookup-output">
                                 <a href="http://jennywillott.com">http://jennywillott.com</a>
                             </div>
@@ -162,13 +162,15 @@ if (class_exists("GFForms")) {
                         <label for="email">Send my message to:</label>
                         <input name="email" id="email" class="email lookup-output" type="email" value="jenny@jennywillott.com"/>
                       </div>
-                    </div>
+                    <!-- </div> - deliberately commented out and conditionally included below -->
                 <?php } ?>
 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_container">
                     <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" class="textarea gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10"><?php echo $field['defaultValue'] ?></textarea>
-                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message:' , 'gravityformsmpcontact') ?></label>
                 </span>
+                
+                <?php if(false == is_admin()) echo '</div>';?>
 
                 <input hidden type="text" name="input_<?php echo $field['id'] ?>.3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
             

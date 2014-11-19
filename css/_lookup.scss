@@ -3,7 +3,7 @@
 	background-color: $color-grey;
 	padding: 1em;
 	margin: 1em 0;
-	// display: none;
+	display: none;
 
 	h3{
 		margin-top: 0;
@@ -61,5 +61,6 @@
 
 	input{
 		max-width: 20em;
+		margin-bottom: 1em;
 	}
 }
