@@ -94,9 +94,11 @@ if (class_exists("GFForms")) {
             case "mp-contact" :
             field.label = "<?php _e("MP Contact", "gravityforms"); ?>"; // setting the default field label
             field.inputs = [
-                new Input( field.id + 0.1, '<?php echo esc_js(__("UK Postcode", "gravityforms")); ?>'),
-                new Input( field.id + 0.2, '<?php echo esc_js(__("Message to MP", "gravityforms")); ?>'),
-                new Input( field.id + 0.3, '<?php echo esc_js(__("MP Email Address", "gravityforms")); ?>'),
+                new Input( field.id + 0.1, '<?php echo esc_js(__("Name", "gravityforms")); ?>'),
+                new Input( field.id + 0.2, '<?php echo esc_js(__("Email", "gravityforms")); ?>'),
+                new Input( field.id + 0.3, '<?php echo esc_js(__("Postcode", "gravityforms")); ?>'),
+                new Input( field.id + 0.4, '<?php echo esc_js(__("MP Email Address", "gravityforms")); ?>'),
+                new Input( field.id + 0.5, '<?php echo esc_js(__("Message", "gravityforms")); ?>'),
             ];
             break;
             <?php
@@ -124,8 +126,18 @@ if (class_exists("GFForms")) {
             <div class="ginput_container ginput_complex wpmpc" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>">
                 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_container">
-                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact postcode <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
-                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'UK Postcode' , 'gravityformsmpcontact' ) ?></label>
+                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact name <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Your name' , 'gravityformsmpcontact' ) ?></label>
+                </span>
+
+                <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_container">
+                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" class="input gform_wpmpcontact sender-email <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_label"><?php _e( 'Your e-mail address' , 'gravityformsmpcontact' ) ?></label>
+                </span>
+
+                <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3_container">
+                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3" class="input gform_wpmpcontact postcode <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3_label"><?php _e( 'Your postcode' , 'gravityformsmpcontact' ) ?></label>
                 </span>
 
                 <?php if(false == is_admin()){ ?>
@@ -158,21 +170,19 @@ if (class_exists("GFForms")) {
                           </div>  
                         </div>
                       </div>
-                      <div class="mp-email">
-                        <label for="email">Send my message to:</label>
-                        <input name="email" id="email" class="email lookup-output" type="email" value="jenny@jennywillott.com"/>
-                      </div>
+                      <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_container">
+                          <input disabled value="jenny@jennywillott.com" type="text" name="input_<?php echo $field['id'] ?>.4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" class="input gform_wpmpcontact mp-email <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                          <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_label"><?php _e( 'MP E-Mail (send to)' , 'gravityformsmpcontact' ) ?></label>
+                      </span>
                     <!-- </div> - deliberately commented out and conditionally included below -->
                 <?php } ?>
 
-                <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_container">
-                    <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" class="textarea gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10"><?php echo $field['defaultValue'] ?></textarea>
-                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message:' , 'gravityformsmpcontact') ?></label>
+                <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5_container">
+                    <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" class="textarea gform_wpmpcontact mp-contact message<?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10"><?php echo $field['defaultValue'] ?></textarea>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
                 </span>
                 
                 <?php if(false == is_admin()) echo '</div>';?>
-
-                <input hidden type="text" name="input_<?php echo $field['id'] ?>.3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
             
             </div>
 
@@ -235,161 +245,6 @@ if (class_exists("GFForms")) {
             }
         }
 
-
-        // public function plugin_page() {
-            // echo 'This page appears in the Forms menu';
-        // }
-
-        // public function form_settings_fields($form) {
-        //     return array(
-        //         array(
-        //             "title"  => "Campaign Settings Fields",
-        //             "fields" => array(
-        //                 array(
-        //                     "label"   => "My checkbox",
-        //                     "type"    => "checkbox",
-        //                     "name"    => "enabled",
-        //                     "tooltip" => "This is the tooltip",
-        //                     "choices" => array(
-        //                         array(
-        //                             "label" => "Enabled",
-        //                             "name"  => "enabled"
-        //                         )
-        //                     )
-        //                 ),
-        //                 array(
-        //                     "label"   => "My checkboxes",
-        //                     "type"    => "checkbox",
-        //                     "name"    => "checkboxgroup",
-        //                     "tooltip" => "This is the tooltip",
-        //                     "choices" => array(
-        //                         array(
-        //                             "label" => "First Choice",
-        //                             "name"  => "first"
-        //                         ),
-        //                         array(
-        //                             "label" => "Second Choice",
-        //                             "name"  => "second"
-        //                         ),
-        //                         array(
-        //                             "label" => "Third Choice",
-        //                             "name"  => "third"
-        //                         )
-        //                     )
-        //                 ),
-        //                 array(
-        //                     "label"   => "My Radio Buttons",
-        //                     "type"    => "radio",
-        //                     "name"    => "myradiogroup",
-        //                     "tooltip" => "This is the tooltip",
-        //                     "choices" => array(
-        //                         array(
-        //                             "label" => "First Choice"
-        //                         ),
-        //                         array(
-        //                             "label" => "Second Choice"
-        //                         ),
-        //                         array(
-        //                             "label" => "Third Choice"
-        //                         )
-        //                     )
-        //                 ),
-        //                 array(
-        //                     "label"   => "My Horizontal Radio Buttons",
-        //                     "type"    => "radio",
-        //                     "horizontal" => true,
-        //                     "name"    => "myradiogrouph",
-        //                     "tooltip" => "This is the tooltip",
-        //                     "choices" => array(
-        //                         array(
-        //                             "label" => "First Choice"
-        //                         ),
-        //                         array(
-        //                             "label" => "Second Choice"
-        //                         ),
-        //                         array(
-        //                             "label" => "Third Choice"
-        //                         )
-        //                     )
-        //                 ),
-        //                 array(
-        //                     "label"   => "My Dropdown",
-        //                     "type"    => "select",
-        //                     "name"    => "mydropdown",
-        //                     "tooltip" => "This is the tooltip",
-        //                     "choices" => array(
-        //                         array(
-        //                             "label" => "First Choice",
-        //                             "value" => "first"
-        //                         ),
-        //                         array(
-        //                             "label" => "Second Choice",
-        //                             "value" => "second"
-        //                         ),
-        //                         array(
-        //                             "label" => "Third Choice",
-        //                             "value" => "third"
-        //                         )
-        //                     )
-        //                 ),
-        //                 array(
-        //                     "label"   => "My Text Box",
-        //                     "type"    => "text",
-        //                     "name"    => "mytext",
-        //                     "tooltip" => "This is the tooltip",
-        //                     "class"   => "medium",
-        //                     "feedback_callback" => array($this, "is_valid_setting")
-        //                 ),
-        //                 array(
-        //                     "label"   => "My Text Area",
-        //                     "type"    => "textarea",
-        //                     "name"    => "mytextarea",
-        //                     "tooltip" => "This is the tooltip",
-        //                     "class"   => "medium merge-tag-support mt-position-right"
-        //                 ),
-        //                 array(
-        //                     "label"   => "My Hidden Field",
-        //                     "type"    => "hidden",
-        //                     "name"    => "myhidden"
-        //                 ),
-        //                 array(
-        //                     "label"   => "My Custom Field",
-        //                     "type"    => "my_custom_field_type",
-        //                     "name"    => "my_custom_field"
-        //                 )
-        //             )
-        //         )
-        //     );
-        // }
-
-        public function settings_my_custom_field_type(){
-            ?>
-            <div>
-                My custom field contains a few settings:
-            </div>
-            <?php
-                $this->settings_text(
-                    array(
-                        "label" => "A textbox sub-field",
-                        "name" => "subtext",
-                        "default_value" => "change me"
-                    )
-                );
-                $this->settings_checkbox(
-                    array(
-                        "label" => "A checkbox sub-field",
-                        "choices" => array(
-                            array(
-                                "label" => "Activate",
-                                "name" => "subcheck",
-                                "default_value" => true
-                            )
-
-                        )
-                    )
-                );
-        }
-
         public function plugin_settings_fields() {
             return array(
                 array(
@@ -411,55 +266,6 @@ if (class_exists("GFForms")) {
         public function is_valid_setting($value){
             return strlen($value) < 10;
         }
-
-        // public function mp_contact_field_settings($position, $form_id){
-        //     //Field innards here
-
-        //     //create settings on position 25 (right after Field Label)
-        //     if ($position == 25) {
-        //       echo 'wow';
-        //     }
-        // }
-
-
-        // public function scripts() {
-        //     $scripts = array(
-        //         array("handle"  => "my_script_js",
-        //               "src"     => $this->get_base_url() . "/js/my_script.js",
-        //               "version" => $this->_version,
-        //               "deps"    => array("jquery"),
-        //               "strings" => array(
-        //                   'first'  => __("First Choice", "simpleaddon"),
-        //                   'second' => __("Second Choice", "simpleaddon"),
-        //                   'third'  => __("Third Choice", "simpleaddon")
-        //               ),
-        //               "enqueue" => array(
-        //                   array(
-        //                       "admin_page" => array("form_settings"),
-        //                       "tab"        => "simpleaddon"
-        //                   )
-        //               )
-        //         ),
-
-        //     );
-
-        //     return array_merge(parent::scripts(), $scripts);
-        // }
-
-        // public function styles() {
-
-        //     $styles = array(
-        //         array("handle"  => "my_styles_css",
-        //               "src"     => $this->get_base_url() . "/css/my_styles.css",
-        //               "version" => $this->_version,
-        //               "enqueue" => array(
-        //                   array("field_types" => array("poll"))
-        //               )
-        //         )
-        //     );
-
-        //     return array_merge(parent::styles(), $styles);
-        // }
 
         public function add_mp_contact_field($field_groups) { //Was public static function
 

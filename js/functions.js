@@ -6,7 +6,7 @@ jQuery(document).ready(function($){
 	var gform = $('.wpmpc').parents('.gform_wrapper');
 	var gformId = gform.attr('id').slice(-1);
 	var gformSubmit = gform.find('[id^=gform_submit_button]');
-	var email = $('input.email');
+	var email = $('input.mp-email');
 	var results = $('.lookup-results');
 	
 	// Enable the form fields on the front end
@@ -23,7 +23,7 @@ jQuery(document).ready(function($){
 	$('#modal-window').prepend(modalCloser, modalContent);
 
 	/* Move a the 'message' label somewhere more appropriate */
-	$(".lookup-results").has("input[type='email'],input[type='text'],input[type='password'],select,textarea").find("label").each(function() {
+	$(".lookup-results").parent().has("input[type='email'],input[type='text'],input[type='password'],select,textarea").find("label").each(function() {
 	    var e = $(this), fielddesc = $("<div>").append(e.clone()).remove().html();
 	    e.siblings("input,select,textarea").before(fielddesc);
 	    e.remove();
@@ -64,8 +64,8 @@ jQuery(document).ready(function($){
 			
 			// Clear existing search results
 			$('.lookup-output').each(function(){
-				$(this).removeAttr('value');
-				$(this).empty();
+				// $(this).removeAttr('value');
+				// $(this).empty();
 			});
 
 			// Add our search results
