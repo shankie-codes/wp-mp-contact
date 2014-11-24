@@ -56,14 +56,6 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	// $('.sendButton').attr('disabled',true);
-	//     $('#message').keyup(function(){
-	//         if($(this).val().length !=0)
-	//             $('.sendButton').attr('disabled', false);            
-	//         else
-	//             $('.sendButton').attr('disabled',true);
-	//     })
-
 	/** Bind an AJAX call to the to the .lookup-mp button **/
 	gformLookupMp.on('click', function(event){
 
@@ -105,6 +97,9 @@ jQuery(document).ready(function($){
 
 			// Clear the search
 			$('.postcode').removeAttr('value');
+
+			//Disable the search button
+			gformLookupMp.attr('disabled', true);
 
 		}
 

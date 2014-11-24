@@ -142,7 +142,7 @@ if (class_exists("GFForms")) {
 
                 <?php if(false == is_admin()){ ?>
                     <!-- Button to initiate AJAX call to return MP email address -->
-                    <input type="button" class=".gform-button wp-mp-contact lookup-mp" value="<?php _e( 'Lookup MP', 'gravityformsmpcontact') ?>">
+                    <input type="button" class="gform_button button lookup-mp" value="<?php _e( 'Lookup MP', 'gravityformsmpcontact') ?>">
                     
                     <div class="lookup-results">
                       <div class="message"></div>
