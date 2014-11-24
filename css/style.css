@@ -1,3 +1,11 @@
+/* line 10, _layout.scss */
+.attrib {
+  margin-top: 1em;
+  font-size: 0.75em; }
+  /* line 14, _layout.scss */
+  .attrib img {
+    max-width: 8em; }
+
 /* line 1, _modal.scss */
 #modal-window {
   background: rgba(255, 255, 255, 0.6);
@@ -46,8 +54,7 @@
 .lookup-results {
   background-color: #e0e0e0;
   padding: 1em;
-  margin: 1em 0;
-  display: none; }
+  margin: 1em 0; }
   /* line 8, _lookup.scss */
   .lookup-results h3 {
     margin-top: 0; }
@@ -74,31 +81,51 @@
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: horizontal;
+    margin-bottom: 1em;
+    -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row; }
-  /* line 39, _lookup.scss */
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column; }
+    @media (min-width: 640px) {
+      /* line 34, _lookup.scss */
+      .lookup-results .mp-container {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row; } }
+  /* line 45, _lookup.scss */
   .lookup-results .mp-details {
-    margin-left: 1em;
     background-color: white;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    padding: 1em;
-    width: 100%;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+    padding: 1em;
+    max-width: 100%;
+    font-size: 0.75em;
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
     -ms-flex-pack: justify;
     justify-content: space-between; }
-  /* line 49, _lookup.scss */
+    @media (min-width: 640px) {
+      /* line 45, _lookup.scss */
+      .lookup-results .mp-details {
+        font-size: 1em;
+        margin-left: 1em;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%; } }
+  /* line 62, _lookup.scss */
   .lookup-results .detail-item {
     display: -webkit-box;
     display: -webkit-flex;
@@ -109,15 +136,12 @@
     -webkit-flex-direction: row;
     -ms-flex-direction: row;
     flex-direction: row; }
-  /* line 54, _lookup.scss */
+  /* line 67, _lookup.scss */
   .lookup-results .label {
     -webkit-flex-basis: 5em;
     -ms-flex-preferred-size: 5em;
     flex-basis: 5em; }
-  /* line 58, _lookup.scss */
-  .lookup-results .mp-email {
-    margin-top: 1em; }
-  /* line 62, _lookup.scss */
+  /* line 75, _lookup.scss */
   .lookup-results input {
     max-width: 20em;
     margin-bottom: 1em; }

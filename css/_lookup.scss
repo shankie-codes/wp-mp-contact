@@ -3,7 +3,7 @@
 	background-color: $color-grey;
 	padding: 1em;
 	margin: 1em 0;
-	display: none;
+	// display: none;
 
 	h3{
 		margin-top: 0;
@@ -33,17 +33,30 @@
 
 	.mp-container{
 	  display: flex;
-	  flex-direction: row;
+	  margin-bottom: 1em;
+
+	  flex-direction: column;
+
+	  @include media(momma){
+	  	flex-direction: row;
+	  }
 	}
 
 	.mp-details{
-	  margin-left: 1em;
 	  background-color: white;
 	  display: flex;
-	  padding: 1em;
-	  width: 100%;
 	  flex-direction: column;
+	  padding: 1em;
+	  max-width: 100%;
+	  font-size: 0.75em;
 	  justify-content: space-between;
+
+	  @include media(momma){
+	  	font-size: 1em;
+	  	margin-left: 1em;
+	  	flex-direction: column;
+	  	width: 100%
+	  }
 	}
 
 	.detail-item{
@@ -56,7 +69,7 @@
 	}
 
 	.mp-email{
-	  margin-top: 1em;
+	  // margin-top: 1em;
 	}
 
 	input{

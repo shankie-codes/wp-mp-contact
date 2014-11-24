@@ -1,0 +1,2 @@
+- Notifications not automatically configured. Left to the user
+- Minimal styling

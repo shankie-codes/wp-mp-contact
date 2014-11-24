@@ -6,3 +6,12 @@
     @media (min-width: 1200px) { @content; }
   }
 }
+
+.attrib{
+	margin-top: 1em;
+	font-size: 0.75em;
+
+	img{
+		max-width: 8em;
+	}
+}

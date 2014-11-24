@@ -23,7 +23,7 @@ jQuery(document).ready(function($){
 	});
 
 	/* Disable the search and submit buttons unless the fields have values*/
-	gformLookupMp.attr('disabled', true);
+	// gformLookupMp.attr('disabled', true);
 	gformSubmit.attr('disabled', true);
 	
 
@@ -73,10 +73,13 @@ jQuery(document).ready(function($){
 				// $(this).empty();
 			});
 
-			// Add our search results
-			results.append(postcode);
+			// Make an AJAX call
 
-			// Enable the submit button if there's an
+
+			// Add our search results
+			// results.append(postcode);
+
+			// Enable the submit button if there's an email address in the email field
 			if(email.attr("value").length !== 0){
 				gformSubmit.attr('disabled', false);
 			}
@@ -107,9 +110,25 @@ jQuery(document).ready(function($){
 	
 });
 
-function getMP(postcode, callback){
-	
+
+function getMP(postCode){
+	// Define jQuery as $ so that we can use it with a bit less insanity
+	(function($) {
+		var data = {
+			action: 'get_mp',
+            postcode: postCode
+		};
+
+		// the_ajax_script.ajaxurl is a variable that will contain the url to the ajax processing file
+	 	$.post(the_ajax_script.ajaxurl, data, function(response) {
+			console.log(response);
+	 	});
+
+	 	return false;
+
+	})(jQuery);
 }
+
 
 /* OpenModal
 *

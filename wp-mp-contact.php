@@ -181,6 +181,10 @@ if (class_exists("GFForms")) {
                     <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" class="textarea gform_wpmpcontact mp-contact message<?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10"><?php echo $field['defaultValue'] ?></textarea>
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
                 </span>
+
+                <span class="ginput_full attrib">
+                    <?php _e( 'Data provided by ', 'gravityformsmpcontact' ); ?><a href="http://www.theyworkforyou.com/">theyworkforyou.com</a> and <a href="http://theguardian.com"><img src="<?php echo plugins_url( 'img/poweredbyguardian.png' , __FILE__ )  ?> " alt="Powered by the Guardian"></a>
+                </span>
                 
                 <?php if(false == is_admin()) echo '</div>';?>
             
@@ -265,7 +269,7 @@ if (class_exists("GFForms")) {
             return strlen($value) < 10;
         }
 
-        public function add_mp_contact_field($field_groups) { //Was public static function
+        public function add_mp_contact_field($field_groups) { 
 
             foreach ($field_groups as &$group) {
                 if ($group["name"] == "advanced_fields") {
@@ -276,8 +280,141 @@ if (class_exists("GFForms")) {
 
             return $field_groups;
         }
+
+        public function get_MP($postcode){
+            /* Core API calls */
+
+            // Include the API binding
+            require_once 'inc/twfyapi.php';
+
+            if( strlen($this->get_plugin_setting('twfy_api_key')) > 5){
+                // Set up a new instance of the API binding using key from twfy_api_key
+                $twfyapi = new TWFYAPI($this->get_plugin_setting('twfy_api_key'));
+            }
+            else{
+                return array(
+                    'error' => 'TWFY API key not set. Please speak with the site\'s administrator'
+                    );
+            }
+            
+            $constituency = $twfyapi->query('getConstituency', array('output' => 'php', 'postcode' => $postcode));
+            $constituency = unserialize($constituency);
+
+            //Get the MP from the Guardian's politics API
+            $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';
+             
+            //Get the output and decode it into a PHP object
+            $json_output = file_get_contents($constit_url);
+            $constituency_obj = json_decode($json_output);
+            // $mpinfo = objectToArray($constituency_obj);
+
+            //Get the MP url
+            $mp_url = $constituency_obj->constituency->mp->{'json-url'};
+
+            //Get the Political Person object from the Guardian's politics API
+            //Get the output and decode it into a PHP object
+            $json_output = file_get_contents($mp_url);
+            $mp_obj = json_decode($json_output);
+
+            return $mp_obj;
+            
+            // echo 'MP: ' . $mp_obj->person->name . '<br/>';
+            // echo 'MP email: ' . $mp_obj->person->{'contact-details'}->{'email-addresses'}[0]->email . '<br/>';
+            // $website = $mp_obj->person->{'contact-details'}->{'websites'}[0]->url;
+            // echo 'MP website: <a href="' . $website . '">' . $website . '</a><br/>';
+
+            // if(isset($mp_obj->person->image)){
+            //     $image = $mp_obj->person->image;
+            // }
+            // else{
+            //     //give us a mystery man
+            //     $image = 'http://blogtimenow.com/images/creating-custom-default-gravatar-wordpress.jpg';
+            // }
+
+
+            // echo 'MP image: <img src="' . $image . '">';
+            
+        }
+
+        // public function get_MP($postcode){
+            /* Core API calls */
+
+            // // Include the API binding
+            // require_once 'inc/twfyapi.php';
+            // return $this->get_plugin_setting('twfy_api_key');
+            // // Set up a new instance of the API binding using key from twfy_api_key
+            // $twfyapi = new TWFYAPI($this->get_plugin_setting('twfy_api_key'));
+
+            // // Get the constituency from TWFY from the postcode in the query string
+            // $postcode = $_GET['postcode'];
+
+            // $constituency = $twfyapi->query('getConstituency', array('output' => 'php', 'postcode' => $postcode));
+            // $constituency = unserialize($constituency);
+
+            // //Get the MP from the Guardian's politics API
+            // $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';
+             
+            // //Get the output and decode it into a PHP object
+            // $json_output = file_get_contents($constit_url);
+            // $constituency_obj = json_decode($json_output);
+            // // $mpinfo = objectToArray($constituency_obj);
+
+            // //Get the MP url
+            // $mp_url = $constituency_obj->constituency->mp->{'json-url'};
+
+            // //Get the Political Person object from the Guardian's politics API
+            // //Get the output and decode it into a PHP object
+            // $json_output = file_get_contents($mp_url);
+            // $mp_obj = json_decode($json_output);
+
+            
+            // echo 'MP: ' . $mp_obj->person->name . '<br/>';
+            // echo 'MP email: ' . $mp_obj->person->{'contact-details'}->{'email-addresses'}[0]->email . '<br/>';
+            // $website = $mp_obj->person->{'contact-details'}->{'websites'}[0]->url;
+            // echo 'MP website: <a href="' . $website . '">' . $website . '</a><br/>';
+
+            // if(isset($mp_obj->person->image)){
+            //     $image = $mp_obj->person->image;
+            // }
+            // else{
+            //     //give us a mystery man
+            //     $image = 'http://blogtimenow.com/images/creating-custom-default-gravatar-wordpress.jpg';
+            // }
+
+
+            // echo 'MP image: <img src="' . $image . '">';
+        // }
+
     }
 
-
+    /* Make us an object, will ya? */
     new GF_WP_MP_Contact();
+
+    /* AJAX bits, as usual credit to Pippin https://pippinsplugins.com/process-ajax-requests-correctly-in-wordpress-plugins/ */
+
+    function mp_contact_ajax_load_scripts() {    
+        
+        // make the ajaxurl var available to the plugin's scripts file
+        wp_localize_script( 'gform_mp_contact_script', 'the_ajax_script', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );  
+
+    }
+
+    add_action('wp_print_scripts', 'mp_contact_ajax_load_scripts');
+
+    function get_mp_ajax_process_request() {
+
+        // first check if data is being sent and that it is the data we want
+        if ( isset( $_POST['postcode'] ) ) {
+
+            // Declare a new instance of the add-on
+            $MP_contact = new GF_WP_MP_Contact();
+            
+            $response = json_encode($MP_contact->get_MP($_POST['postcode']));
+            // send the response back to the front end
+            echo $response;
+            die();
+        }
+    }
+    add_action('wp_ajax_get_mp', 'get_mp_ajax_process_request');
+
 }
