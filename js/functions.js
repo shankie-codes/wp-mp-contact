@@ -6,6 +6,7 @@ jQuery(document).ready(function($){
 	var gform = $('.wpmpc').parents('.gform_wrapper');
 	var gformId = gform.attr('id').slice(-1);
 	var gformSubmit = gform.find('[id^=gform_submit_button]');
+	var gformLookupMp = $('.lookup-mp');
 	var email = $('input.mp-email');
 	var results = $('.lookup-results');
 	
@@ -14,14 +15,6 @@ jQuery(document).ready(function($){
 		$(this).prop('disabled', false);
 	});
 
-	/** Add a closer to the modal window **/
-	// Create the .modal-close and .modal-content
-	var modalCloser = '<span class="modal-close">&times;</span>';
-	var modalContent = '<div class="modal-content"></div>';
-
-	//Prepend the closer
-	$('#modal-window').prepend(modalCloser, modalContent);
-
 	/* Move a the 'message' label somewhere more appropriate */
 	$(".lookup-results").parent().has("input[type='email'],input[type='text'],input[type='password'],select,textarea").find("label").each(function() {
 	    var e = $(this), fielddesc = $("<div>").append(e.clone()).remove().html();
@@ -29,13 +22,33 @@ jQuery(document).ready(function($){
 	    e.remove();
 	});
 
-	/* Disable the submit button unless .email has a value*/
-	// Disable it by default
+	/* Disable the search and submit buttons unless the fields have values*/
+	gformLookupMp.attr('disabled', true);
 	gformSubmit.attr('disabled', true);
+	
 
-	// Bind a function to detect when it changes
+	// Re-enable the Lookup MP button if Name, Email and Postcode (together .lookup-fields) are all complete
+	$('.lookup-fields').keyup(function(){
+		
+		//Flag to see if we want to enable the button at the end
+		enableButton = false;
+		
+		//Don't use $(this) for this next iteration as we're trying to loop each one of the fields (not simply the one that the function was bound to above)
+		$('.lookup-fields').each(function(){
+			if($(this).attr("value").length == 0){
+				enableButton = false;
+				return false; // Works as 'break' with a jQuery loop
+			}
+			enableButton = true;
+		});
+
+		//Set the status of the button
+		gformLookupMp.attr('disabled', !enableButton);
+	});
+
+	// Re-enable the submit button if the MP email address is enabled
 	email.keyup(function(){
-		if($(this).attr("value").length !== 0){
+		if(this.attr("value").length !== 0){
 			gformSubmit.attr('disabled', false);
 		}
 		else{
@@ -51,8 +64,8 @@ jQuery(document).ready(function($){
 	//             $('.sendButton').attr('disabled',true);
 	//     })
 
-	/** Bind an AJAX call to the to the button **/
-	$('.lookup-mp').on('click', function(event){
+	/** Bind an AJAX call to the to the .lookup-mp button **/
+	gformLookupMp.on('click', function(event){
 
 		event.preventDefault();
 
@@ -71,7 +84,7 @@ jQuery(document).ready(function($){
 			// Add our search results
 			results.append(postcode);
 
-			// Enable the submit button if there's
+			// Enable the submit button if there's an
 			if(email.attr("value").length !== 0){
 				gformSubmit.attr('disabled', false);
 			}
@@ -80,7 +93,7 @@ jQuery(document).ready(function($){
 			results.slideDown();
 
 			// A search has been executed. Change the button text and start over
-			$('.lookup-mp').text('Start Over');
+			gformLookupMp.text('Start Over');
 		}
 		
 		else{
@@ -88,15 +101,13 @@ jQuery(document).ready(function($){
 			results.slideUp();
 
 			//Change the button text
-			$('.lookup-mp').text('Lookup MP');
+			gformLookupMp.text('Lookup MP');
 
 			// Clear the search
 			$('.postcode').removeAttr('value');
 
 		}
 
-
-		// openModal(postcode);
 	});
 	
 });

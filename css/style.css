@@ -33,33 +33,11 @@
     .modal-content {
       width: 800px !important; } }
 
-/* line 1, _buttons.scss */
-.button .wp-mp-contact {
-  text-decoration: none;
-  cursor: pointer;
-  display: inline-block;
-  padding: 1em;
-  border: none;
-  border-radius: 0 0 0.25em 0.25em;
-  margin-bottom: 0.5em;
-  line-height: 1.2;
-  background-color: blue;
-  color: white; }
-  /* line 13, _buttons.scss */
-  .button .wp-mp-contact:hover {
-    color: white; }
-  /* line 17, _buttons.scss */
-  .button .wp-mp-contact:active {
-    color: white; }
-  /* line 21, _buttons.scss */
-  .button .wp-mp-contact:visited {
-    color: white; }
-
-/* line 26, _buttons.scss */
+/* line 28, _buttons.scss */
 .gform_button[disabled] {
   opacity: 0.25; }
 
-/* line 30, _buttons.scss */
+/* line 32, _buttons.scss */
 .lookup-mp {
   display: inline-block;
   margin: 1em 1em 1em 0; }
