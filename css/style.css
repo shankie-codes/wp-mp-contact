@@ -54,7 +54,8 @@
 .lookup-results {
   background-color: #e0e0e0;
   padding: 1em;
-  margin: 1em 0; }
+  margin: 1em 0;
+  display: none; }
   /* line 8, _lookup.scss */
   .lookup-results h3 {
     margin-top: 0; }
@@ -142,6 +143,12 @@
     -ms-flex-preferred-size: 5em;
     flex-basis: 5em; }
   /* line 75, _lookup.scss */
+  .lookup-results .mp-website {
+    -webkit-box-flex: 2;
+    -webkit-flex-grow: 2;
+    -ms-flex-positive: 2;
+    flex-grow: 2; }
+  /* line 79, _lookup.scss */
   .lookup-results input {
     max-width: 20em;
     margin-bottom: 1em; }

@@ -13,8 +13,20 @@ $twfyapi = new TWFYAPI('EYCTEZEiStQfEp83c6GjvrNr');
 // Get the constituency from TWFY from the postcode in the query string
 $postcode = $_GET['postcode'];
 
+// Start output buffering. The TWFY API returns a variety of errors through die() rather than returning an error. Need to capture these
+ob_start();
+
+// Query They Work for You (TWFY)
 $constituency = $twfyapi->query('getConstituency', array('output' => 'php', 'postcode' => $postcode));
 $constituency = unserialize($constituency);
+
+// Handle any number of errors returned from the server
+$errors = ob_get_clean();
+
+if($errors){
+    // return make_error('A server error occurred (1) when looking up your postcode. Please enter your MP\'s email address manually below, or contact the administrator');
+    die('oops');
+}
 
 //Get the MP from the Guardian's politics API
 $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';

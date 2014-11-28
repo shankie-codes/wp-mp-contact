@@ -3,7 +3,7 @@
 	background-color: $color-grey;
 	padding: 1em;
 	margin: 1em 0;
-	// display: none;
+	display: none;
 
 	h3{
 		margin-top: 0;
@@ -70,6 +70,10 @@
 
 	.mp-email{
 	  // margin-top: 1em;
+	}
+
+	.mp-website{
+		flex-grow: 2;
 	}
 
 	input{

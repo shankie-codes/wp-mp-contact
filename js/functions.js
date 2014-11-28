@@ -23,7 +23,7 @@ jQuery(document).ready(function($){
 	});
 
 	/* Disable the search and submit buttons unless the fields have values*/
-	// gformLookupMp.attr('disabled', true);
+	gformLookupMp.attr('disabled', true);
 	gformSubmit.attr('disabled', true);
 	
 
@@ -84,11 +84,26 @@ jQuery(document).ready(function($){
 				gformSubmit.attr('disabled', false);
 			}
 
-			//Reveal our results
-			results.slideDown();
+			//
+			getMPJSON(postcode, function(MP){
+				// Got the MP object from the API call, now manipulate the form
+				console.log(MP);
+				$('.mp-constituency').html(MP.constituency);
+				$('.mp-name').html(MP.name);
+				$('.mp-email').each(function(){
+					$(this).html(MP.email);
+					$(this).val(MP.email);
+				});
+				$('.mp-website').attr('href', MP.website);
+				$('.mp-photo').children('img').attr("src", MP.image)
+				
 
-			// A search has been executed. Change the button text and start over
-			gformLookupMp.text('Start Over');
+				//Reveal our results
+				results.slideDown();
+
+				// A search has been executed. Change the button text and start over
+				gformLookupMp.text('Start Over');
+			});
 		}
 		
 		else{
@@ -111,57 +126,20 @@ jQuery(document).ready(function($){
 });
 
 
-function getMP(postCode){
-	// Define jQuery as $ so that we can use it with a bit less insanity
-	(function($) {
+function getMPJSON(postCode, callback){
 		var data = {
 			action: 'get_mp',
-            postcode: postCode
+	        postcode: postCode
 		};
 
-		// the_ajax_script.ajaxurl is a variable that will contain the url to the ajax processing file
-	 	$.post(the_ajax_script.ajaxurl, data, function(response) {
-			console.log(response);
+	 	jQuery.post(the_ajax_script.ajaxurl, data, function(response) {
+			// Turn it into a JS object
+			response = JSON.parse(response);
+			// Call the callback
+			if (typeof callback === 'function') {
+				callback(response);
+			}
 	 	});
-
-	 	return false;
-
-	})(jQuery);
 }
 
 
-/* OpenModal
-*
-* Clears previous content and injects content into a container (.modal-content). Slides it down.
-*
-*/
-
-function openModal(content, callback){
-
-	// Empty content injected by previous calls
-	jQuery('.modal-content').empty();
-
-	// Slide down the modal window
-	jQuery('#modal-window').slideDown(function(){
-
-		jQuery('.modal-content').position({my: 'center top', at: 'center top', of: '#modal-window'});
-		jQuery('.modal-content').append(content);
-	});
-				
-	setTimeout(function(){
-		// make sure the callback is a function
-		if (typeof callback == 'function') { 
-			// brings the scope to the callback
-			callback.call(this);
-		}
-	}, 2000);
-
-	jQuery('.modal-close').position({my: 'center', at: 'left top', of: '.modal-content'});
-
-	jQuery('.modal-close').click(function(){
-		jQuery('#modal-window').slideUp(function(){
-			jQuery('.modal-content').empty();
-		});
-	});
-
-}

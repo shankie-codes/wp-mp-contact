@@ -126,17 +126,17 @@ if (class_exists("GFForms")) {
             <div class="ginput_container ginput_complex wpmpc" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>">
                 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_container">
-                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact lookup-fields name <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <input value="Andrew" disabled type="text" name="input_<?php echo $field['id'] ?>.1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" class="input gform_wpmpcontact lookup-fields name <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Your name*' , 'gravityformsmpcontact' ) ?></label>
                 </span>
 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_container">
-                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" class="input gform_wpmpcontact lookup-fields sender-email <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <input value="andrew.shankie@gmail.com" disabled type="text" name="input_<?php echo $field['id'] ?>.2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" class="input gform_wpmpcontact lookup-fields sender-email <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_2_label"><?php _e( 'Your e-mail address*' , 'gravityformsmpcontact' ) ?></label>
                 </span>
 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3_container">
-                    <input disabled type="text" name="input_<?php echo $field['id'] ?>.3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3" class="input gform_wpmpcontact lookup-fields postcode <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <input value="CF24 4LF" disabled type="text" name="input_<?php echo $field['id'] ?>.3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3" class="input gform_wpmpcontact lookup-fields postcode <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3_label"><?php _e( 'Your postcode*' , 'gravityformsmpcontact' ) ?></label>
                 </span>
 
@@ -146,32 +146,29 @@ if (class_exists("GFForms")) {
                     
                     <div class="lookup-results">
                       <div class="message"></div>
-                      <h3><?php _e( 'MP for your constituency:', 'gravityformsmpcontact' ); ?> Cathays</h3>
+                      <h3><?php _e( 'MP for your constituency: ', 'gravityformsmpcontact' ); ?><span class="mp-constituency"></span></h3>
                       <div class="mp-container">
                         <div class="mp-photo lookup-output">
-                          <img src="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2009/5/14/1242300471314/Jenny-Willott-MP-001.jpg" alt="" />
+                          <img src="" alt="" />
                         </div>
                         <div class="mp-details">
                           <div class="detail-item">
                             <div class="label"><?php _e( 'Name', 'gravityformsmpcontact' ); ?>:</div>
-                            <div class="detail lookup-output">Jenny Willott</div>
+                            <div class="detail lookup-output mp-name"></div>
                           </div>
                           <div class="detail-item">
                             <div class="label"><?php _e( 'E-mail', 'gravityformsmpcontact' ); ?>:</div>
-                            <div class="detail lookup-output">
-                                <a href="mailto:jenny@jennywillott.com">jenny@jennywillott.com</a>
+                            <div class="detail lookup-output mp-email">
+                                <a href=""></a>
                             </div>
                           </div>   
                           <div class="detail-item">
-                            <div class="label"><?php _e( 'Website', 'gravityformsmpcontact' ); ?>:</div>
-                            <div class="detail lookup-output">
-                                <a href="http://jennywillott.com">http://jennywillott.com</a>
-                            </div>
+                            <div class="label mp-website"><a href="" class="mp-website"><?php _e( 'MP Website', 'gravityformsmpcontact' ); ?></a> </div>
                           </div>  
                         </div>
                       </div>
                       <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_container">
-                          <input disabled value="jenny@jennywillott.com" type="text" name="input_<?php echo $field['id'] ?>.4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" class="input gform_wpmpcontact mp-email <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                          <input class="mp-email mp-contact" disabled value="" type="text" name="input_<?php echo $field['id'] ?>.4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" class="input gform_wpmpcontact mp-email <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
                           <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_label"><?php _e( 'MP E-Mail (send to)' , 'gravityformsmpcontact' ) ?></label>
                       </span>
                     <!-- </div> - deliberately commented out and conditionally included below -->
@@ -296,8 +293,15 @@ if (class_exists("GFForms")) {
                     'error' => 'TWFY API key not set. Please speak with the site\'s administrator'
                     );
             }
-            
+
+            // Query They Work for You (TWFY)
             $constituency = $twfyapi->query('getConstituency', array('output' => 'php', 'postcode' => $postcode));
+            
+            //Handle errors from the server call to TWFY
+            if($constituency['error']){
+                return (object)($constituency);
+            }
+            
             $constituency = unserialize($constituency);
 
             //Get the MP from the Guardian's politics API
@@ -316,75 +320,32 @@ if (class_exists("GFForms")) {
             $json_output = file_get_contents($mp_url);
             $mp_obj = json_decode($json_output);
 
-            return $mp_obj;
+            // Initialise an array to hold our outputs
+            $output = array();
+
+            // Get basic outputs
+            $output['name'] = $mp_obj->person->name;
+            $output['website'] = $mp_obj->person->{'contact-details'}->{'websites'}[0]->url;
+            $output['email'] = $mp_obj->person->{'contact-details'}->{'email-addresses'}[0]->email;
+
+            // Get the MP's image, or if not, show a mystery man
+            if(isset($mp_obj->person->image)){
+                $output['image'] = $mp_obj->person->image;
+            }
+            else{
+                $output['image'] = plugins_url( 'img/mystery-man.png' , __FILE__ );
+            }
+
+            $output['constituency'] = $mp_obj->person->constituency->name;
             
-            // echo 'MP: ' . $mp_obj->person->name . '<br/>';
-            // echo 'MP email: ' . $mp_obj->person->{'contact-details'}->{'email-addresses'}[0]->email . '<br/>';
-            // $website = $mp_obj->person->{'contact-details'}->{'websites'}[0]->url;
-            // echo 'MP website: <a href="' . $website . '">' . $website . '</a><br/>';
-
-            // if(isset($mp_obj->person->image)){
-            //     $image = $mp_obj->person->image;
-            // }
-            // else{
-            //     //give us a mystery man
-            //     $image = 'http://blogtimenow.com/images/creating-custom-default-gravatar-wordpress.jpg';
-            // }
-
-
-            // echo 'MP image: <img src="' . $image . '">';
-            
+            return $output;
+                        
         }
 
-        // public function get_MP($postcode){
-            /* Core API calls */
-
-            // // Include the API binding
-            // require_once 'inc/twfyapi.php';
-            // return $this->get_plugin_setting('twfy_api_key');
-            // // Set up a new instance of the API binding using key from twfy_api_key
-            // $twfyapi = new TWFYAPI($this->get_plugin_setting('twfy_api_key'));
-
-            // // Get the constituency from TWFY from the postcode in the query string
-            // $postcode = $_GET['postcode'];
-
-            // $constituency = $twfyapi->query('getConstituency', array('output' => 'php', 'postcode' => $postcode));
-            // $constituency = unserialize($constituency);
-
-            // //Get the MP from the Guardian's politics API
-            // $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';
-             
-            // //Get the output and decode it into a PHP object
-            // $json_output = file_get_contents($constit_url);
-            // $constituency_obj = json_decode($json_output);
-            // // $mpinfo = objectToArray($constituency_obj);
-
-            // //Get the MP url
-            // $mp_url = $constituency_obj->constituency->mp->{'json-url'};
-
-            // //Get the Political Person object from the Guardian's politics API
-            // //Get the output and decode it into a PHP object
-            // $json_output = file_get_contents($mp_url);
-            // $mp_obj = json_decode($json_output);
-
-            
-            // echo 'MP: ' . $mp_obj->person->name . '<br/>';
-            // echo 'MP email: ' . $mp_obj->person->{'contact-details'}->{'email-addresses'}[0]->email . '<br/>';
-            // $website = $mp_obj->person->{'contact-details'}->{'websites'}[0]->url;
-            // echo 'MP website: <a href="' . $website . '">' . $website . '</a><br/>';
-
-            // if(isset($mp_obj->person->image)){
-            //     $image = $mp_obj->person->image;
-            // }
-            // else{
-            //     //give us a mystery man
-            //     $image = 'http://blogtimenow.com/images/creating-custom-default-gravatar-wordpress.jpg';
-            // }
-
-
-            // echo 'MP image: <img src="' . $image . '">';
-        // }
-
+        private function make_error($message){
+            $error['error'] = $message;
+            return (object)$error;
+        }
     }
 
     /* Make us an object, will ya? */
@@ -402,7 +363,6 @@ if (class_exists("GFForms")) {
     add_action('wp_print_scripts', 'mp_contact_ajax_load_scripts');
 
     function get_mp_ajax_process_request() {
-
         // first check if data is being sent and that it is the data we want
         if ( isset( $_POST['postcode'] ) ) {
 
@@ -416,5 +376,6 @@ if (class_exists("GFForms")) {
         }
     }
     add_action('wp_ajax_get_mp', 'get_mp_ajax_process_request');
+    add_action('wp_ajax_nopriv_get_mp', 'get_mp_ajax_process_request');
 
 }
