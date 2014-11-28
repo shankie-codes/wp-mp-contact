@@ -143,7 +143,7 @@ class TWFYAPI_Request
         // Check to see if valid URL has been set
         if (!isset($this->URL) || $this->URL == '')
         {
-            return twfy_error( 'Invalid function: ' . $this->func . '. Please look at the documentation for supported functions.');
+            return tfwfy_error( 'Invalid function: ' . $this->func . '. Please look at the documentation for supported functions.');
         }
     }
 
@@ -302,6 +302,7 @@ function TWFY_error( $err_str ){
 
   // Return an object containing a TWFY error
   $error = array('error' => $error_output);
+  $error = serialize($error);
   return $error;
 }
 

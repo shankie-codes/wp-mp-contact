@@ -295,14 +295,17 @@ if (class_exists("GFForms")) {
             }
 
             // Query They Work for You (TWFY)
-            $constituency = $twfyapi->query('getConstituency', array('output' => 'php', 'postcode' => $postcode));
-            
+            $constituency = $twfyapi->query('getConstituency', array('postcode' => $postcode, 'output' => 'php'));
+
+            // Unserialize the serialized PHP that comes back
+            $constituency = unserialize($constituency);
+
             //Handle errors from the server call to TWFY
-            if($constituency['error']){
+            if( $constituency['error'] ){
+                // Handle the return appropriately
+                
                 return (object)($constituency);
             }
-            
-            $constituency = unserialize($constituency);
 
             //Get the MP from the Guardian's politics API
             $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';

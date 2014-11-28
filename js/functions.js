@@ -134,6 +134,7 @@ function getMPJSON(postCode, callback){
 
 	 	jQuery.post(the_ajax_script.ajaxurl, data, function(response) {
 			// Turn it into a JS object
+			console.log(response);
 			response = JSON.parse(response);
 			// Call the callback
 			if (typeof callback === 'function') {
