@@ -29,7 +29,7 @@ MP-Contact comes with minimal styling out of the box and doesn't pre-suppose how
 
 Feel free to contribute to the project. You can find the repo on Github at https://github.com/shankiesan/wp-mp-contact
 
-WP-MP-Contact was developer by [Proper Design]http://properdesign.rs
+WP-MP-Contact was developer by Proper Design (http://properdesign.rs)
 
  Acknowledgements: 
 
