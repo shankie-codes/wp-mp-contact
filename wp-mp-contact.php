@@ -3,7 +3,7 @@
  * Plugin Name: WP MP Contact Gravity Add-on
  * Plugin URI: https://wordpress.org/plugins/wp-mp-contact
  * Description: Gravity Forms extension for UK Member of Parliament email campaigns
- * Version: 0.0.1
+ * Version: 1.0
  * Author: Proper Design
  * Author URI: http://properdesign.rs
  * License: GPL2
@@ -11,7 +11,8 @@
  * Acknowledgements: 
  * Renewable UK (http://www.renewableuk.com/) and Action for Renewables (http://www.actionforrenewables.org/) for funding the initial development of this Gravity Forms add-in
  * WPSmith for the tutorial that got it all started (http://wpsmith.net/2011/plugins/how-to-create-a-custom-form-field-in-gravity-forms-with-a-terms-of-service-form-field-example/)
- * The Agency for showing how to work with complext fields (http://theagencyonline.co.uk/2014/07/custom-multiple-input-form-for-gravity-fields/)
+ * The Agency for showing how to work with complex fields (http://theagencyonline.co.uk/2014/07/custom-multiple-input-form-for-gravity-fields/)
+ * Pippin Williamson for the usual and oft-forgotten explanation of the proper way to do AJAX in WordPress (https://pippinsplugins.com/process-ajax-requests-correctly-in-wordpress-plugins/)
  */
 
 /*  Copyright 2014  Proper Design  (email : hello@properdesign.rs)
@@ -37,7 +38,7 @@ if (class_exists("GFForms")) {
 
     class GF_WP_MP_Contact extends GFAddOn {
 
-        protected $_version = "0.0.1";
+        protected $_version = "1.0";
         protected $_min_gravityforms_version = "1.6.000";
         protected $_slug = "wp-mp-contact";
         protected $_path = "wp-mp-contact/wp-mp-contact.php";
@@ -145,7 +146,7 @@ if (class_exists("GFForms")) {
                     <input type="button" class="gform_button button lookup-mp" value="<?php _e( 'Lookup MP', 'gravityformsmpcontact') ?>">
                     
                     <div class="lookup-results">
-                      <div class="message"></div>
+                      <div class="error-message"></div>
                       <h3><?php _e( 'MP for your constituency: ', 'gravityformsmpcontact' ); ?><span class="mp-constituency"></span></h3>
                       <div class="mp-container">
                         <div class="mp-photo lookup-output">
@@ -159,7 +160,6 @@ if (class_exists("GFForms")) {
                           <div class="detail-item">
                             <div class="label"><?php _e( 'E-mail', 'gravityformsmpcontact' ); ?>:</div>
                             <div class="detail lookup-output mp-email">
-                                <a href=""></a>
                             </div>
                           </div>   
                           <div class="detail-item">
@@ -210,16 +210,6 @@ if (class_exists("GFForms")) {
             </script>
             <?php
         }
-
-        // Add the text in the plugin settings to the bottom of the form if enabled for this form
-        // function form_submit_button($button, $form){
-        //     $settings = $this->get_form_settings($form);
-        //     if(isset($settings["enabled"]) && true == $settings["enabled"]){
-        //         $text = $this->get_plugin_setting("mytextbox");
-        //         $button = "<div>{$text}</div>" . $button;
-        //     }
-        //     return $button;
-        // }
         
         function mp_contact_gform_enqueue_scripts( $form ) {
             
@@ -290,7 +280,7 @@ if (class_exists("GFForms")) {
             }
             else{
                 return array(
-                    'error' => 'TWFY API key not set. Please speak with the site\'s administrator'
+                    'error' => 'TWFY API key not set.'
                     );
             }
 
@@ -308,20 +298,34 @@ if (class_exists("GFForms")) {
             }
 
             //Get the MP from the Guardian's politics API
-            $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';
-             
+            $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';            
+
             //Get the output and decode it into a PHP object
-            $json_output = file_get_contents($constit_url);
-            $constituency_obj = json_decode($json_output);
-            // $mpinfo = objectToArray($constituency_obj);
+            if($this->get_http_response_code( $constit_url ) == "200"){
+                $json_output = file_get_contents($constit_url);
+                $constituency_obj = json_decode($json_output);
+            }else{
+                return array(
+                    'error' => 'Server error: could not find your constituency with The Guardian.'
+                    );
+            }
 
             //Get the MP url
             $mp_url = $constituency_obj->constituency->mp->{'json-url'};
 
-            //Get the Political Person object from the Guardian's politics API
             //Get the output and decode it into a PHP object
-            $json_output = file_get_contents($mp_url);
-            $mp_obj = json_decode($json_output);
+            if($this->get_http_response_code( $mp_url ) == "200"){
+                
+                //Get the Political Person object from the Guardian's politics API
+                //Get the output and decode it into a PHP object
+                $json_output = file_get_contents($mp_url);
+                $mp_obj = json_decode($json_output);
+
+            }else{
+                return array(
+                    'error' => 'Server error: could not find your MP with The Guardian.'
+                    );
+            }
 
             // Initialise an array to hold our outputs
             $output = array();
@@ -349,12 +353,15 @@ if (class_exists("GFForms")) {
             $error['error'] = $message;
             return (object)$error;
         }
+
+        private function get_http_response_code($url) {
+            $headers = get_headers($url);
+            return substr($headers[0], 9, 3);
+        }
     }
 
     /* Make us an object, will ya? */
     new GF_WP_MP_Contact();
-
-    /* AJAX bits, as usual credit to Pippin https://pippinsplugins.com/process-ajax-requests-correctly-in-wordpress-plugins/ */
 
     function mp_contact_ajax_load_scripts() {    
         

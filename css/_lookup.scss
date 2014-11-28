@@ -20,11 +20,15 @@
 	  }
 	}
 
-	.message{
+	.error-message{
 	  padding: 1em;
 	  margin-bottom: 1em;
 	  background-color: $color-red-light;
 	  border: 1px solid $color-red-dark;
+	}
+
+	.error-message:empty{
+		display: none;
 	}
 
 	.message:empty{

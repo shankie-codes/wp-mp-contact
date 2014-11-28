@@ -1,2 +1,4 @@
 - Notifications not automatically configured. Left to the user
 - Minimal styling
+- Testing with your own email
+- TWYFI API and errors

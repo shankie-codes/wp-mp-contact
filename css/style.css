@@ -68,15 +68,18 @@
       max-width: 100%;
       max-height: 100%; }
   /* line 23, _lookup.scss */
-  .lookup-results .message {
+  .lookup-results .error-message {
     padding: 1em;
     margin-bottom: 1em;
     background-color: #ea8c80;
     border: 1px solid #b42e1d; }
   /* line 30, _lookup.scss */
-  .lookup-results .message:empty {
+  .lookup-results .error-message:empty {
     display: none; }
   /* line 34, _lookup.scss */
+  .lookup-results .message:empty {
+    display: none; }
+  /* line 38, _lookup.scss */
   .lookup-results .mp-container {
     display: -webkit-box;
     display: -webkit-flex;
@@ -89,14 +92,14 @@
     -ms-flex-direction: column;
     flex-direction: column; }
     @media (min-width: 640px) {
-      /* line 34, _lookup.scss */
+      /* line 38, _lookup.scss */
       .lookup-results .mp-container {
         -webkit-box-orient: horizontal;
         -webkit-box-direction: normal;
         -webkit-flex-direction: row;
         -ms-flex-direction: row;
         flex-direction: row; } }
-  /* line 45, _lookup.scss */
+  /* line 49, _lookup.scss */
   .lookup-results .mp-details {
     background-color: white;
     display: -webkit-box;
@@ -116,7 +119,7 @@
     -ms-flex-pack: justify;
     justify-content: space-between; }
     @media (min-width: 640px) {
-      /* line 45, _lookup.scss */
+      /* line 49, _lookup.scss */
       .lookup-results .mp-details {
         font-size: 1em;
         margin-left: 1em;
@@ -126,7 +129,7 @@
         -ms-flex-direction: column;
         flex-direction: column;
         width: 100%; } }
-  /* line 62, _lookup.scss */
+  /* line 66, _lookup.scss */
   .lookup-results .detail-item {
     display: -webkit-box;
     display: -webkit-flex;
@@ -137,18 +140,18 @@
     -webkit-flex-direction: row;
     -ms-flex-direction: row;
     flex-direction: row; }
-  /* line 67, _lookup.scss */
+  /* line 71, _lookup.scss */
   .lookup-results .label {
     -webkit-flex-basis: 5em;
     -ms-flex-preferred-size: 5em;
     flex-basis: 5em; }
-  /* line 75, _lookup.scss */
+  /* line 79, _lookup.scss */
   .lookup-results .mp-website {
     -webkit-box-flex: 2;
     -webkit-flex-grow: 2;
     -ms-flex-positive: 2;
     flex-grow: 2; }
-  /* line 79, _lookup.scss */
+  /* line 83, _lookup.scss */
   .lookup-results input {
     max-width: 20em;
     margin-bottom: 1em; }

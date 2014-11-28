@@ -46,9 +46,9 @@ jQuery(document).ready(function($){
 		gformLookupMp.attr('disabled', !enableButton);
 	});
 
-	// Re-enable the submit button if the MP email address is enabled
+	// Re-enable the submit button if the MP email address is completed
 	email.keyup(function(){
-		if(this.attr("value").length !== 0){
+		if($(this).attr("value").length !== 0){
 			gformSubmit.attr('disabled', false);
 		}
 		else{
@@ -86,23 +86,39 @@ jQuery(document).ready(function($){
 
 			//
 			getMPJSON(postcode, function(MP){
-				// Got the MP object from the API call, now manipulate the form
-				console.log(MP);
-				$('.mp-constituency').html(MP.constituency);
-				$('.mp-name').html(MP.name);
-				$('.mp-email').each(function(){
-					$(this).html(MP.email);
-					$(this).val(MP.email);
-				});
-				$('.mp-website').attr('href', MP.website);
-				$('.mp-photo').children('img').attr("src", MP.image)
-				
+				if(MP.error){
+					// switch
+					$('.error-message').append(MP.error);
+					$('.error-message').append('<br/>Please enter your MP\'s email address below or contact the administrator.');
+					$('.mp-container').hide();
+					
+				}
+				else{
+					// Got the MP object from the API call, now manipulate the form
+					$('.mp-constituency').html(MP.constituency);
+					$('.mp-name').html(MP.name);
+					
+					// Check if the API returned an e-mail address
+					if(MP.email){
+						$('.mp-email').each(function(){
+							$(this).html(MP.email);
+							$(this).val(MP.email);
+						});
+						gformSubmit.attr('disabled', false);
+					}
+					else{
+						$('.error-message').append('We couldn\'t find an email address for your MP. <br/>Please enter your MP\'s email address below or contact the administrator.');
+					}
+					$('.mp-website').attr('href', MP.website);
+					$('.mp-photo').children('img').attr("src", MP.image)
+				}
+
+				// A search has been executed. Change the button text and start over
+				gformLookupMp.val('Start Over');
 
 				//Reveal our results
 				results.slideDown();
 
-				// A search has been executed. Change the button text and start over
-				gformLookupMp.text('Start Over');
 			});
 		}
 		
@@ -110,12 +126,18 @@ jQuery(document).ready(function($){
 			// Hide the results panel
 			results.slideUp();
 
-			//Change the button text
-			gformLookupMp.text('Lookup MP');
+			// Show the results in case they were hidden
+			$('.mp-container').show();
+
+			// Change the button text
+			gformLookupMp.val('Lookup MP');
 
 			// Clear the search
-			$('.postcode').removeAttr('value');
+			$('.postcode, .mp-email').removeAttr('value');
 
+			// Clear any errors
+			$('.error-message').empty();
+			
 			//Disable the search button
 			gformLookupMp.attr('disabled', true);
 
@@ -133,13 +155,14 @@ function getMPJSON(postCode, callback){
 		};
 
 	 	jQuery.post(the_ajax_script.ajaxurl, data, function(response) {
+			
 			// Turn it into a JS object
-			console.log(response);
 			response = JSON.parse(response);
 			// Call the callback
 			if (typeof callback === 'function') {
 				callback(response);
 			}
+
 	 	});
 }
 
