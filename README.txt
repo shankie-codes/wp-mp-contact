@@ -1,20 +1,14 @@
-# WP-MP-Contact #
-**Contributors:** shankie
-  
-**Tags:** Gravity Forms, TWFY, They Work for You, MP
-  
-**Requires at least:** 4.0
-  
-**Tested up to:** 4.0.1
-  
-**License:** GPL
-  
-**License URI:** http://www.gnu.org/copyleft/gpl.html
-  
+=== WP-MP-Contact ===
+Contributors: shankie
+Tags: Gravity Forms, TWFY, They Work for You, MP
+Requires at least: 4.0
+Tested up to: 4.0.1
+License: GPL
+License URI: http://www.gnu.org/copyleft/gpl.html
 
 WP-MP-Contact is a Gravity Forms add-in for UK Member of Parliament email campaigns.
 
-## Description ##
+== Description ==
 Tested on Gravity Forms 1.8.19, will probably work under versions from 1.6.
 
 WP-MP-Contact is a Gravity Forms add-in for UK Member of Parliament email campaigns. Using API calls to They Work for You and The Guardian\'s politics API, a campaigning organisation can add an \'MP-Contact\' field to their gravity form which allows pre-population of an (editable) message to send to an MP.
@@ -41,7 +35,7 @@ WP-MP-Contact was developer by [Proper Design]http://properdesign.rs
 * The Agency for showing how to work with complex fields (http://theagencyonline.co.uk/2014/07/custom-multiple-input-form-for-gravity-fields/)
 * Pippin Williamson for the usual and oft-forgotten explanation of the proper way to do AJAX in WordPress (https://pippinsplugins.com/process-ajax-requests-correctly-in-wordpress-plugins/)
 
-## Installation ##
+== Installation ==
 1. Make sure that Gravity Forms is installed on your WordPress site
 2. Upload this plugin to your WordPress site as you would any other plugin
 3. Get a theyworkforyou.com API key by going to http://www.theyworkforyou.com/api/key
@@ -60,6 +54,5 @@ It\'s also worth noting that you should set the From Email address to an email a
 
 You can further reduce the chances of your emails being marked as spam by configuring WordPress to use your own SMTP servers, rather than the PHP mail() built into WordPress by using this plugin: https://wordpress.org/plugins/wp-mail-smtp/
 
-## Changelog ##
+== Changelog ==
 1.0 - Initial Release
-
