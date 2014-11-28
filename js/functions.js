@@ -2,7 +2,7 @@
 
 jQuery(document).ready(function($){
 
-	/* Define some handy variables */
+	// Define some handy variables 
 	var gform = $('.wpmpc').parents('.gform_wrapper');
 	var gformId = gform.attr('id').slice(-1);
 	var gformSubmit = gform.find('[id^=gform_submit_button]');
@@ -15,7 +15,7 @@ jQuery(document).ready(function($){
 		$(this).prop('disabled', false);
 	});
 
-	/* Move a the 'message' label somewhere more appropriate */
+	// Move a the 'message' label somewhere more appropriate 
 	$(".lookup-results").parent().has("input[type='email'],input[type='text'],input[type='password'],select,textarea").find("label").each(function() {
 	    var e = $(this), fielddesc = $("<div>").append(e.clone()).remove().html();
 	    e.siblings("input,select,textarea").before(fielddesc);
@@ -25,15 +25,14 @@ jQuery(document).ready(function($){
 	/* Disable the search and submit buttons unless the fields have values*/
 	gformLookupMp.attr('disabled', true);
 	gformSubmit.attr('disabled', true);
-	
 
 	// Re-enable the Lookup MP button if Name, Email and Postcode (together .lookup-fields) are all complete
 	$('.lookup-fields').keyup(function(){
 		
-		//Flag to see if we want to enable the button at the end
+		// Flag to see if we want to enable the button at the end
 		enableButton = false;
 		
-		//Don't use $(this) for this next iteration as we're trying to loop each one of the fields (not simply the one that the function was bound to above)
+		// Don't use $(this) for this next iteration as we're trying to loop each one of the fields (not simply the one that the function was bound to above)
 		$('.lookup-fields').each(function(){
 			if($(this).attr("value").length == 0){
 				enableButton = false;
@@ -42,7 +41,7 @@ jQuery(document).ready(function($){
 			enableButton = true;
 		});
 
-		//Set the status of the button
+		// Set the status of the button
 		gformLookupMp.attr('disabled', !enableButton);
 	});
 
@@ -56,7 +55,7 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	/** Bind an AJAX call to the to the .lookup-mp button **/
+	// Bind an AJAX call to the to the .lookup-mp button 
 	gformLookupMp.on('click', function(event){
 
 		event.preventDefault();
@@ -72,12 +71,6 @@ jQuery(document).ready(function($){
 				// $(this).removeAttr('value');
 				// $(this).empty();
 			});
-
-			// Make an AJAX call
-
-
-			// Add our search results
-			// results.append(postcode);
 
 			// Enable the submit button if there's an email address in the email field
 			if(email.attr("value").length !== 0){
@@ -149,21 +142,21 @@ jQuery(document).ready(function($){
 
 
 function getMPJSON(postCode, callback){
-		var data = {
-			action: 'get_mp',
-	        postcode: postCode
-		};
+	var data = {
+		action: 'get_mp',
+        postcode: postCode
+	};
 
-	 	jQuery.post(the_ajax_script.ajaxurl, data, function(response) {
-			
-			// Turn it into a JS object
-			response = JSON.parse(response);
-			// Call the callback
-			if (typeof callback === 'function') {
-				callback(response);
-			}
+ 	jQuery.post(the_ajax_script.ajaxurl, data, function(response) {
+		
+		// Turn it into a JS object
+		response = JSON.parse(response);
+		// Call the callback
+		if (typeof callback === 'function') {
+			callback(response);
+		}
 
-	 	});
+ 	});
 }
 
 

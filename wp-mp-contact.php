@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP MP Contact Gravity Add-on
  * Plugin URI: https://wordpress.org/plugins/wp-mp-contact
- * Description: Gravity Forms extension for UK Member of Parliament email campaigns
+ * Description: Gravity Forms add-in for UK Member of Parliament email campaigns
  * Version: 1.0.0
  * Author: Proper Design
  * Author URI: http://properdesign.rs
@@ -191,7 +191,6 @@ if (class_exists("GFForms")) {
             return ob_get_clean();
         }
 
-
         function mp_contact_title( $field_type ) {
             if ( $field_type == 'mp-contact' )
             return __( 'MP Contact Postcode Search' , 'gravityformsmpcontact' );
@@ -290,17 +289,17 @@ if (class_exists("GFForms")) {
             // Unserialize the serialized PHP that comes back
             $constituency = unserialize($constituency);
 
-            //Handle errors from the server call to TWFY
+            // Handle errors from the server call to TWFY
             if( $constituency['error'] ){
                 // Handle the return appropriately
                 
                 return (object)($constituency);
             }
 
-            //Get the MP from the Guardian's politics API
+            // Get the MP from the Guardian's politics API
             $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';            
 
-            //Get the output and decode it into a PHP object
+            // Get the output and decode it into a PHP object
             if($this->get_http_response_code( $constit_url ) == "200"){
                 $json_output = file_get_contents($constit_url);
                 $constituency_obj = json_decode($json_output);
@@ -310,14 +309,14 @@ if (class_exists("GFForms")) {
                     );
             }
 
-            //Get the MP url
+            // Get the MP url
             $mp_url = $constituency_obj->constituency->mp->{'json-url'};
 
             //Get the output and decode it into a PHP object
             if($this->get_http_response_code( $mp_url ) == "200"){
                 
-                //Get the Political Person object from the Guardian's politics API
-                //Get the output and decode it into a PHP object
+                // Get the Political Person object from the Guardian's politics API
+                // Get the output and decode it into a PHP object
                 $json_output = file_get_contents($mp_url);
                 $mp_obj = json_decode($json_output);
 
@@ -365,7 +364,7 @@ if (class_exists("GFForms")) {
 
     function mp_contact_ajax_load_scripts() {    
         
-        // make the ajaxurl var available to the plugin's scripts file
+        // Make the ajaxurl var available to the plugin's scripts file
         wp_localize_script( 'gform_mp_contact_script', 'the_ajax_script', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );  
 
     }
@@ -373,14 +372,15 @@ if (class_exists("GFForms")) {
     add_action('wp_print_scripts', 'mp_contact_ajax_load_scripts');
 
     function get_mp_ajax_process_request() {
-        // first check if data is being sent and that it is the data we want
+        
+        // Check if we're being sent a postcode
         if ( isset( $_POST['postcode'] ) ) {
 
             // Declare a new instance of the add-on
             $MP_contact = new GF_WP_MP_Contact();
             
             $response = json_encode($MP_contact->get_MP($_POST['postcode']));
-            // send the response back to the front end
+            // Send the response back to the front end
             echo $response;
             die();
         }
