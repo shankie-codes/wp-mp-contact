@@ -3,7 +3,7 @@
  * Plugin Name: WP MP Contact Gravity Add-on
  * Plugin URI: https://wordpress.org/plugins/wp-mp-contact
  * Description: Gravity Forms add-in for UK Member of Parliament email campaigns
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Proper Design
  * Author URI: http://properdesign.rs
  * License: GPL2
@@ -141,7 +141,7 @@ if (class_exists("GFForms")) {
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3_label"><?php _e( 'Your postcode*' , 'gravityformsmpcontact' ) ?></label>
                 </span>
 
-                <?php if(false == is_admin()){ ?>
+                <?php if(false == is_admin()): ?>
                     <!-- Button to initiate AJAX call to return MP email address -->
                     <input type="button" class="gform_button button lookup-mp" value="<?php _e( 'Lookup MP', 'gravityformsmpcontact') ?>">
                     
@@ -172,18 +172,20 @@ if (class_exists("GFForms")) {
                           <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_label"><?php _e( 'MP E-Mail (send to)' , 'gravityformsmpcontact' ) ?></label>
                       </span>
                     <!-- </div> - deliberately commented out and conditionally included below -->
-                <?php } ?>
+                <?php endif; ?>
 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5_container">
                     <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" class="textarea gform_wpmpcontact mp-contact message<?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10"><?php echo $field['defaultValue'] ?></textarea>
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
                 </span>
-
-                <span class="ginput_full attrib">
-                    <?php _e( 'Data provided by ', 'gravityformsmpcontact' ); ?><a href="http://www.theyworkforyou.com/">theyworkforyou.com</a> and <a href="http://theguardian.com"><img src="<?php echo plugins_url( 'img/poweredbyguardian.png' , __FILE__ )  ?> " alt="Powered by the Guardian"></a>
-                </span>
                 
-                <?php if(false == is_admin()) echo '</div>';?>
+                <?php if( is_admin() ): ?>
+                    <span class="ginput_full attrib">
+                        <?php _e( 'Data provided by ', 'gravityformsmpcontact' ); ?><a href="http://www.theyworkforyou.com/">theyworkforyou.com</a> and <a href="http://theguardian.com"><img src="<?php echo plugins_url( 'img/poweredbyguardian.png' , __FILE__ )  ?> " alt="Powered by the Guardian"></a>
+                    </span>
+                <?php endif; ?>
+                
+                <?php if( false == is_admin() ) echo '</div>';?>
             
             </div>
 
