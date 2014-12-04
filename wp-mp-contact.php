@@ -98,8 +98,9 @@ if (class_exists("GFForms")) {
                 new Input( field.id + 0.1, '<?php echo esc_js(__("Name", "gravityforms")); ?>'),
                 new Input( field.id + 0.2, '<?php echo esc_js(__("Email", "gravityforms")); ?>'),
                 new Input( field.id + 0.3, '<?php echo esc_js(__("Postcode", "gravityforms")); ?>'),
-                new Input( field.id + 0.4, '<?php echo esc_js(__("MP Email Address", "gravityforms")); ?>'),
-                new Input( field.id + 0.5, '<?php echo esc_js(__("Message", "gravityforms")); ?>'),
+                new Input( field.id + 0.4, '<?php echo esc_js(__("Address", "gravityforms")); ?>'),
+                new Input( field.id + 0.5, '<?php echo esc_js(__("MP Email Address", "gravityforms")); ?>'),
+                new Input( field.id + 0.6, '<?php echo esc_js(__("Message", "gravityforms")); ?>'),
             ];
             break;
             <?php
@@ -141,6 +142,11 @@ if (class_exists("GFForms")) {
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_3_label"><?php _e( 'Your postcode*' , 'gravityformsmpcontact' ) ?></label>
                 </span>
 
+                <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_container">
+                    <input value="" disabled type="text" name="input_<?php echo $field['id'] ?>.4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" class="input gform_wpmpcontact address <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_label"><?php _e( 'First line of your address' , 'gravityformsmpcontact' ) ?></label>
+                </span>
+
                 <?php if(false == is_admin()): ?>
                     <!-- Button to initiate AJAX call to return MP email address -->
                     <input type="button" class="gform_button button lookup-mp" value="<?php _e( 'Lookup MP', 'gravityformsmpcontact') ?>">
@@ -168,15 +174,15 @@ if (class_exists("GFForms")) {
                         </div>
                       </div>
                       <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_container">
-                          <input class="mp-email mp-contact" disabled value="" type="text" name="input_<?php echo $field['id'] ?>.4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" class="input gform_wpmpcontact mp-email <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
-                          <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_4_label"><?php _e( 'MP E-Mail (send to)' , 'gravityformsmpcontact' ) ?></label>
+                          <input class="mp-email mp-contact" disabled value="" type="text" name="input_<?php echo $field['id'] ?>.5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" class="input gform_wpmpcontact mp-email <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> value=""/>
+                          <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5_label"><?php _e( 'MP E-Mail (send to)' , 'gravityformsmpcontact' ) ?></label>
                       </span>
                     <!-- </div> - deliberately commented out and conditionally included below -->
                 <?php endif; ?>
 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5_container">
-                    <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" class="textarea gform_wpmpcontact mp-contact message<?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="50" rows="10"><?php echo $field['defaultValue'] ?></textarea>
-                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
+                    <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.6" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_6" class="textarea gform_wpmpcontact mp-contact message<?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="60" rows="10"><?php echo $field['defaultValue'] ?></textarea>
+                    <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_6" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
                 </span>
                 
                 <?php if( is_admin() ): ?>
