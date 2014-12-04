@@ -36,6 +36,7 @@ WP-MP-Contact was developer by Proper Design (http://properdesign.rs)
 * Pippin Williamson for the usual and oft-forgotten explanation of the proper way to do AJAX in WordPress (https://pippinsplugins.com/process-ajax-requests-correctly-in-wordpress-plugins/)
 
 == Installation ==
+0. Server config! You shouldn't need to do this as PHP's default value is fine, but if you have problems, ,ake sure that allow_url_fopen = 1 in your php.ini file. We won't have much luck without it.
 1. Make sure that Gravity Forms is installed on your WordPress site
 2. Upload this plugin to your WordPress site as you would any other plugin
 3. Get a theyworkforyou.com API key by going to http://www.theyworkforyou.com/api/key
@@ -56,3 +57,4 @@ You can further reduce the chances of your emails being marked as spam by config
 
 == Changelog ==
 1.0 - Initial Release
+1.0.2 - Changes handling of Guardian API calls to CURL

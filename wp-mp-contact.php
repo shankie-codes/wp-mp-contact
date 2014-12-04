@@ -3,7 +3,7 @@
  * Plugin Name: WP MP Contact Gravity Add-on
  * Plugin URI: https://wordpress.org/plugins/wp-mp-contact
  * Description: Gravity Forms add-in for UK Member of Parliament email campaigns
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Proper Design
  * Author URI: http://properdesign.rs
  * License: GPL2
@@ -301,10 +301,28 @@ if (class_exists("GFForms")) {
             // Get the MP from the Guardian's politics API
             $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';            
 
+            // Set up CURL for using with The Guardian
+            $ch = curl_init($constit_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_VERBOSE, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 1);
+
+            // Execute the query
+            $response = curl_exec($ch);
+
+            // Get headers and response
+            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            $header = substr($response, 0, $header_size);
+            $body = substr($response, $header_size);
+           
+            // Get the response code
+            $header_code = substr($header, 9, 3);
+        
             // Get the output and decode it into a PHP object
-            if($this->get_http_response_code( $constit_url ) == "200"){
-                $json_output = file_get_contents($constit_url);
-                $constituency_obj = json_decode($json_output);
+            if($header_code == "200"){
+
+                $constituency_obj = json_decode($body);
+
             }else{
                 return array(
                     'error' => 'Server error: could not find your constituency with The Guardian.'
