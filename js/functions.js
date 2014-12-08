@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
 	gformSubmit.attr('disabled', true);
 
 	// Re-enable the Lookup MP button if Name, Email and Postcode (together .lookup-fields) are all complete
-	$('.lookup-fields').keyup(function(){
+	$('.lookup-fields').on('keyup paste cut focus change blur autocompleteselect', function(){
 		
 		// Flag to see if we want to enable the button at the end
 		enableButton = false;
@@ -46,7 +46,7 @@ jQuery(document).ready(function($){
 	});
 
 	// Re-enable the submit button if the MP email address is completed
-	email.keyup(function(){
+	email.on('keyup paste cut focus change blur autocompleteselect', function(){
 		if($(this).attr("value").length !== 0){
 			gformSubmit.attr('disabled', false);
 		}
@@ -148,7 +148,7 @@ function getMPJSON(postCode, callback){
 	};
 
  	jQuery.post(the_ajax_script.ajaxurl, data, function(response) {
-		
+
 		// Turn it into a JS object
 		response = JSON.parse(response);
 		// Call the callback

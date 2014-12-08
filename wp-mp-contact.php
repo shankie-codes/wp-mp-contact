@@ -31,7 +31,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-if( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if (class_exists("GFForms")) {
     GFForms::include_addon_framework();
@@ -312,10 +312,11 @@ if (class_exists("GFForms")) {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_VERBOSE, 1);
             curl_setopt($ch, CURLOPT_HEADER, 1);
+            curl_setopt($ch, CURLINFO_HEADER_OUT, 1);
 
             // Execute the query
             $response = curl_exec($ch);
-
+            
             // Get headers and response
             $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
             $header = substr($response, 0, $header_size);
@@ -337,20 +338,11 @@ if (class_exists("GFForms")) {
 
             // Get the MP url
             $mp_url = $constituency_obj->constituency->mp->{'json-url'};
-
-            //Get the output and decode it into a PHP object
-            if($this->get_http_response_code( $mp_url ) == "200"){
                 
-                // Get the Political Person object from the Guardian's politics API
-                // Get the output and decode it into a PHP object
-                $json_output = file_get_contents($mp_url);
-                $mp_obj = json_decode($json_output);
-
-            }else{
-                return array(
-                    'error' => 'Server error: could not find your MP with The Guardian.'
-                    );
-            }
+            // Get the Political Person object from the Guardian's politics API
+            // Get the output and decode it into a PHP object
+            $json_output = file_get_contents($mp_url);
+            $mp_obj = json_decode($json_output);
 
             // Initialise an array to hold our outputs
             $output = array();

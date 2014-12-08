@@ -42,6 +42,7 @@ WP-MP-Contact was developer by Proper Design (http://properdesign.rs)
 * Pippin Williamson for the usual and oft-forgotten explanation of the proper way to do AJAX in WordPress (https://pippinsplugins.com/process-ajax-requests-correctly-in-wordpress-plugins/)
 
 ## Installation ##
+0. Make sure that your server is running at least cURL version 7.28.1. If not, upgrade it (or ask your host to upgrade it for you)
 1. Make sure that Gravity Forms is installed on your WordPress site
 2. Upload this plugin to your WordPress site as you would any other plugin
 3. Get a theyworkforyou.com API key by going to http://www.theyworkforyou.com/api/key
