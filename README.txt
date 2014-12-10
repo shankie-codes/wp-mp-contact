@@ -58,3 +58,4 @@ You can further reduce the chances of your emails being marked as spam by config
 == Changelog ==
 1.0 - Initial Release
 1.0.2 - Changes handling of Guardian API calls to CURL
+1.0.3 - Adds prepend and append to the MP message

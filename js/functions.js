@@ -9,6 +9,9 @@ jQuery(document).ready(function($){
 	var gformLookupMp = $('.lookup-mp');
 	var email = $('input.mp-email');
 	var results = $('.lookup-results');
+	var constituentName = $('.lookup-fields.name');
+	var mpName = $('.mp-name');
+	var message = $('.mp-contact.message');
 	
 	// Enable the form fields on the front end
 	$('.mp-contact').each(function(){
@@ -90,6 +93,10 @@ jQuery(document).ready(function($){
 					// Got the MP object from the API call, now manipulate the form
 					$('.mp-constituency').html(MP.constituency);
 					$('.mp-name').html(MP.name);
+
+					// Add some things to the default message
+					message.val('Dear ' + mpName.html() + ',\r\r' + message.val());
+					message.val(message.val() + '\r\rYours sincerely,\r\r' + constituentName.val());
 					
 					// Check if the API returned an e-mail address
 					if(MP.email){

@@ -181,7 +181,7 @@ if (class_exists("GFForms")) {
                 <?php endif; ?>
 
                 <span class="ginput_full" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_5_container">
-                    <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.6" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_6" class="textarea gform_wpmpcontact mp-contact message<?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="60" rows="10"><?php echo $field['defaultValue'] ?></textarea>
+                    <textarea disabled type="text" name="input_<?php echo $field['id'] ?>.6" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_6" class="textarea gform_wpmpcontact mp-contact message <?php echo $field['type'] . ' ' . esc_attr( $css ) . ' ' . $field['size']  ?>" <?php echo $tabindex ?> cols="60" rows="10"><?php echo $field['defaultValue'] ?></textarea>
                     <label for="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_6" id="input_<?php echo $field['formId'] . '_' . $field['id'] ?>_1_label"><?php _e( 'Message' , 'gravityformsmpcontact') ?></label>
                 </span>
                 
