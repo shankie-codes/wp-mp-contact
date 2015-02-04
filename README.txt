@@ -2,7 +2,9 @@
 Contributors: shankie
 Tags: Gravity Forms, TWFY, They Work for You, MP
 Requires at least: 4.0
+Version: 1.1.1
 Tested up to: 4.1
+Stable tag: 1.1
 License: GPL
 License URI: http://www.gnu.org/copyleft/gpl.html
 
@@ -61,4 +63,4 @@ You can further reduce the chances of your emails being marked as spam by config
 1.0 - Initial Release
 1.0.2 - Changes handling of Guardian API calls to CURL
 1.0.3 - Adds prepend and append to the MP message
-1.1 – Moves email source to Google Docs
+1.1.1 – Moves email source to Google Docs

@@ -3,7 +3,7 @@
  * Plugin Name: WP MP Contact Gravity Add-on
  * Plugin URI: https://wordpress.org/plugins/wp-mp-contact
  * Description: Gravity Forms add-in for UK Member of Parliament email campaigns
- * Version: 1.0.3
+ * Version: 1.0.1
  * Author: Proper Design
  * Author URI: http://properdesign.rs
  * License: GPL2
@@ -151,7 +151,7 @@ if (class_exists("GFForms")) {
                     <!-- Button to initiate AJAX call to return MP email address -->
                     <input type="button" class="gform_button button lookup-mp" value="<?php _e( 'Lookup MP', 'gravityformsmpcontact') ?>">
                     <input type="button" class="gform_button button start-again" value="<?php _e( 'Start again', 'gravityformsmpcontact') ?>">
-                    
+
                     <div class="lookup-results">
                       <div class="error-message"></div>
                       <h3><?php _e( 'MP for your constituency: ', 'gravityformsmpcontact' ); ?><span class="mp-constituency"></span></h3>
