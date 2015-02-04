@@ -1,0 +1,44 @@
+{
+  "name": "wp-mp-contact",
+  "version": "0.0.0",
+  "description": "HTML5 Reset is a simple set of *WordPress* best practices to get web projects off on the right foot.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "propergit:.git"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "browser-sync": "^1.7.2",
+    "gulp": "~3.8.10",
+    "gulp-autoprefixer": "~2.0.0",
+    "gulp-bower": "0.0.7",
+    "gulp-compass": "^2.0.3",
+    "gulp-concat": "~2.4.2",
+    "gulp-filter": "~1.0.2",
+    "gulp-jshint": "~1.9.0",
+    "gulp-load-plugins": "^0.7.1",
+    "gulp-notify": "~2.0.1",
+    "gulp-rename": "~1.2.0",
+    "gulp-uglify": "~1.0.1"
+  },
+  "dependencies": {
+    "browser-sync": "^1.7.2",
+    "gulp": "^3.8.10",
+    "gulp-autoprefixer": "^2.0.0",
+    "gulp-bower": "^0.0.7",
+    "gulp-compass": "^2.0.3",
+    "gulp-concat": "^2.4.2",
+    "gulp-filter": "^1.0.2",
+    "gulp-devtools": "^0.0.3",
+    "gulp-load-plugins": "^0.7.1",
+    "gulp-jshint": "^1.9.0",
+    "gulp-uglify": "^1.0.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-notify": "^2.0.1"
+  }
+}

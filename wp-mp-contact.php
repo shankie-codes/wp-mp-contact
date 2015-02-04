@@ -3,7 +3,7 @@
  * Plugin Name: WP MP Contact Gravity Add-on
  * Plugin URI: https://wordpress.org/plugins/wp-mp-contact
  * Description: Gravity Forms add-in for UK Member of Parliament email campaigns
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Proper Design
  * Author URI: http://properdesign.rs
  * License: GPL2
@@ -150,6 +150,7 @@ if (class_exists("GFForms")) {
                 <?php if(false == is_admin()): ?>
                     <!-- Button to initiate AJAX call to return MP email address -->
                     <input type="button" class="gform_button button lookup-mp" value="<?php _e( 'Lookup MP', 'gravityformsmpcontact') ?>">
+                    <input type="button" class="gform_button button start-again" value="<?php _e( 'Start again', 'gravityformsmpcontact') ?>">
                     
                     <div class="lookup-results">
                       <div class="error-message"></div>
@@ -251,8 +252,14 @@ if (class_exists("GFForms")) {
                             "tooltip" => 'WP MP Contact is powered by They Work for You (TWFY) and The Guardian. TWYFI needs an API key – you can get one at <a href="http://www.theyworkforyou.com/api/key">http://www.theyworkforyou.com/api/key</a>',
                             "label"   => "TWFY API key",
                             "type"    => "text",
-                            "class"   => "medium",
-                            "feedback_callback" => array($this, "is_valid_setting")
+                            "class"   => "medium"
+                        ),
+                        array(
+                            "name"    => "google_spreadsheet_json_feed",
+                            "tooltip" => 'This plugin uses as Google Spreadsheet as its data source. Enter the key of the document here.',
+                            "label"   => "Google Spreadsheet JSON API Feed",
+                            "type"    => "text",
+                            "class"   => "medium"
                         )
                     )
                 )
@@ -276,11 +283,12 @@ if (class_exists("GFForms")) {
         }
 
         public function get_MP($postcode){
-            /* Core API calls */
+            /* Core API calls. Executed via an AJAX call from the front end */
 
             // Include the API binding
             require_once 'inc/twfyapi.php';
 
+            // Get an instance of the TWFYAPI
             if( strlen($this->get_plugin_setting('twfy_api_key')) > 5){
                 // Set up a new instance of the API binding using key from twfy_api_key
                 $twfyapi = new TWFYAPI($this->get_plugin_setting('twfy_api_key'));
@@ -291,11 +299,27 @@ if (class_exists("GFForms")) {
                     );
             }
 
-            // Query They Work for You (TWFY)
+            // Get the Google Doc data source
+            if( strlen($this->get_plugin_setting('google_spreadsheet_json_feed')) > 5){
+                
+                // Get the spreadsheet JSON feed from the form settings
+                $constit_url = $this->get_plugin_setting('google_spreadsheet_json_feed');
+            }
+            else{
+                return array(
+                    'error' => 'Google Spreadsheet JSON feed not set.'
+                    );
+            }
+
+            /* Query They Work for You (TWFY) */
+
+            // Get the constituency
             $constituency = $twfyapi->query('getConstituency', array('postcode' => $postcode, 'output' => 'php'));
+            $twfy_mp      = $twfyapi->query('getMP', array('postcode' => $postcode, 'output' => 'php'));
 
             // Unserialize the serialized PHP that comes back
             $constituency = unserialize($constituency);
+            $twfy_mp = unserialize($twfy_mp);
 
             // Handle errors from the server call to TWFY
             if( $constituency['error'] ){
@@ -303,11 +327,13 @@ if (class_exists("GFForms")) {
                 
                 return (object)($constituency);
             }
+            if( $twfy_mp['error'] ){
+                // Handle the return appropriately
+                
+                return (object)($twfy_mp);
+            }
 
-            // Get the MP from the Guardian's politics API
-            $constit_url = 'http://www.theguardian.com/politics/api/constituency/' . $constituency['guardian_id'] . '/json';            
-
-            // Set up CURL for using with The Guardian
+            // Set up CURL to get the Google Spreadsheet data
             $ch = curl_init($constit_url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_VERBOSE, 1);
@@ -328,39 +354,43 @@ if (class_exists("GFForms")) {
             // Get the output and decode it into a PHP object
             if($header_code == "200"){
 
+                // Call was a success. Match the Guardian name from TWFY to the PPC list
+
                 $constituency_obj = json_decode($body);
+                
+                $output['constituency'] = $constituency['guardian_name'];
 
             }else{
+
                 return array(
-                    'error' => 'Server error: could not find your constituency with The Guardian.'
-                    );
+                    'error' => 'Error connecting to MP email address database.'
+                );
             }
 
-            // Get the MP url
-            $mp_url = $constituency_obj->constituency->mp->{'json-url'};
+            // Get the feed out of the returned GDoc
+            $MP_feed = $constituency_obj->feed->entry;
+
+            // Loop through the returned array and compose a new array of results
+            foreach ($MP_feed as $MP) {
                 
-            // Get the Political Person object from the Guardian's politics API
-            // Get the output and decode it into a PHP object
-            $json_output = file_get_contents($mp_url);
-            $mp_obj = json_decode($json_output);
+                if ($MP->{'gsx$guardianconstituency'}->{'$t'} == $output['constituency']) {
+                    $output['name']    = $MP->{'gsx$fullname'}->{'$t'};
+                    $output['party']   = $MP->{'gsx$party'}->{'$t'};
+                    $output['email']   = $MP->{'gsx$email'}->{'$t'};
+                    $output['website'] = 'http://www.theyworkforyou.com' . $twfy_mp['url'];
 
-            // Initialise an array to hold our outputs
-            $output = array();
-
-            // Get basic outputs
-            $output['name'] = $mp_obj->person->name;
-            $output['website'] = $mp_obj->person->{'contact-details'}->{'websites'}[0]->url;
-            $output['email'] = $mp_obj->person->{'contact-details'}->{'email-addresses'}[0]->email;
-
-            // Get the MP's image, or if not, show a mystery man
-            if(isset($mp_obj->person->image)){
-                $output['image'] = $mp_obj->person->image;
+                    // Get the MP's image, or if not, show a mystery man
+                    if(isset($twfy_mp['image'])){
+                        $output['image'] = 'http://www.theyworkforyou.com' . $twfy_mp['image'];
+                    }
+                    else{
+                        $output['image'] = plugins_url( 'img/mystery-man.png' , __FILE__ );
+                    }
+                }
+                else{
+                    // echo 'false';
+                }
             }
-            else{
-                $output['image'] = plugins_url( 'img/mystery-man.png' , __FILE__ );
-            }
-
-            $output['constituency'] = $mp_obj->person->constituency->name;
             
             return $output;
                         

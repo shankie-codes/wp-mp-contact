@@ -5,7 +5,7 @@
   
 **Requires at least:** 4.0
   
-**Tested up to:** 4.0.1
+**Tested up to:** 4.1
   
 **License:** GPL
   
@@ -17,7 +17,9 @@ WP-MP-Contact is a Gravity Forms add-in for UK Member of Parliament email campai
 ## Description ##
 Tested on Gravity Forms 1.8.19, will probably work under versions from 1.6.
 
-WP-MP-Contact is a Gravity Forms add-in for UK Member of Parliament email campaigns. Using API calls to They Work for You and The Guardian's politics API, a campaigning organisation can add an 'MP-Contact' field to their gravity form which allows pre-population of an (editable) message to send to an MP.
+WP-MP-Contact is a Gravity Forms add-in for UK Member of Parliament email campaigns. Using API calls to They Work for You, a campaigning organisation can add an 'MP-Contact' field to their gravity form which allows pre-population of an (editable) message to send to an MP.
+
+Unfortunately, the Guardian has decomissioned their politics API that allowed for this plugin to return an MP's email address without any further input from the administrator. This plugin now uses a Google Spreadsheet as the data source for email addresses. These can either be purchased from DeHavilland, or entered manually from http://parliament.uk. The lookup still uses the Guardian's format of constituency names, so the data in the Google Spreadsheet is looked up from the Guardian Constituency in column A. An example spreadsheet is available at https://docs.google.com/a/properdesign.co.uk/spreadsheets/d/1OCmI1t_6Ou_1CwcK3u0IfhRq3UZ6KaK0Qn5zEfp-DJ4/edit#gid=0
 
 On the front-end, the user enters their UK postcode. If the postcode is valid, WP-MP-Contact will show a slide-down drawer with the MP's details and a pre-populated message from the campaigning organisation (set by the administrator in Gravity Forms settings).
 
@@ -29,13 +31,12 @@ MP-Contact comes with minimal styling out of the box and doesn't pre-suppose how
 
 Feel free to contribute to the project. You can find the repo on Github at https://github.com/shankiesan/wp-mp-contact
 
-WP-MP-Contact was developer by Proper Design (http://properdesign.rs)
+WP-MP-Contact was developed by Proper Design (http://properdesign.rs)
 
  Acknowledgements: 
 
 * Renewable UK (http://www.renewableuk.com/) and Action for Renewables (http://www.actionforrenewables.org/) for funding the initial development of this Gravity Forms add-in
 * They Work for You's consituency API (http://www.theyworkforyou.com/api/)
-* The Guardian's Politics API (http://www.theguardian.com/open-platform/politics-api/getting-started)
 * rubenarakelyan's PHP class for They Work for You (https://github.com/rubenarakelyan/twfyapi)
 * WPSmith for the tutorial that got it all started (http://wpsmith.net/2011/plugins/how-to-create-a-custom-form-field-in-gravity-forms-with-a-terms-of-service-form-field-example/)
 * The Agency for showing how to work with complex fields (http://theagencyonline.co.uk/2014/07/custom-multiple-input-form-for-gravity-fields/)
@@ -47,11 +48,12 @@ WP-MP-Contact was developer by Proper Design (http://properdesign.rs)
 2. Upload this plugin to your WordPress site as you would any other plugin
 3. Get a theyworkforyou.com API key by going to http://www.theyworkforyou.com/api/key
 4. Enter the key into Forms->Settings->WP MP Contact and click 'Update Settings'
-5. Create a new form and add the MP contact field to your form. You'll find it under 'Advanced' fields. It's not really that advanced, don't worry.
-6. Add a default campaign message by going to Advanced Settings for your MP Contact field and adding a default value. This will appear as the campaign message to site visitors.
-7. Add your form to a page as you would any other Gravity Form
-8. Create a new notification for your form by going to [Your form]->Form Settings->Notifications. There are a couple of points to note about notifications, so please read the section 'Notifications' below
-9. Run some tests! The plugin will always send to the address in the front-end field 'MP E-Mail (send to)', so to test the plugin, you can overwrite the returned email address with your own to check how your notification emails appear. Make sure that you do this every time as you will otherwise send test emails to your MP! (Sorry, Jenny)
+5. Add the JSON feed for the Google Spreadsheet data source. A sample spreadsheet is available at https://docs.google.com/a/properdesign.co.uk/spreadsheets/d/1OCmI1t_6Ou_1CwcK3u0IfhRq3UZ6KaK0Qn5zEfp-DJ4/edit#gid=0. A blog post explaining how to publish a Google Spreadsheet into a JSON feed is available here http://properdesign.rs/using-google-spreadsheet-json-data-source/. Add the key into the settings field.
+6. Create a new form and add the MP contact field to your form. You'll find it under 'Advanced' fields. It's not really that advanced, don't worry.
+7. Add a default campaign message by going to Advanced Settings for your MP Contact field and adding a default value. This will appear as the campaign message to site visitors.
+8. Add your form to a page as you would any other Gravity Form
+9. Create a new notification for your form by going to [Your form]->Form Settings->Notifications. There are a couple of points to note about notifications, so please read the section 'Notifications' below
+10. Run some tests! The plugin will always send to the address in the front-end field 'MP E-Mail (send to)', so to test the plugin, you can overwrite the returned email address with your own to check how your notification emails appear. Make sure that you do this every time as you will otherwise send test emails to your MP! (Sorry, Jenny)
 
 Notifications:
 
@@ -65,3 +67,4 @@ You can further reduce the chances of your emails being marked as spam by config
 1.0 - Initial Release
 1.0.2 - Changes handling of Guardian API calls to CURL
 1.0.3 - Adds prepend and append to the MP message
+1.1 – Moves email source to Google Docs

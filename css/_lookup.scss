@@ -1,9 +1,16 @@
+.error .ppc-output{
+	display: none;
+}
+
+.error .lookup-results .ginput_full{
+	display: none;
+}
+
+
 .lookup-results{
 	
 	background-color: $color-grey;
-	padding: 1em;
 	margin: 1em 0;
-	display: none;
 
 	h3{
 		margin-top: 0;
@@ -32,7 +39,7 @@
 	}
 
 	.message:empty{
-		display: none;
+		// display: none;
 	}
 
 	.mp-container{
@@ -44,6 +51,14 @@
 	  @include media(momma){
 	  	flex-direction: row;
 	  }
+	}
+
+	.message {
+		margin-bottom: 1em;
+	}
+
+	.start-again{
+		margin-bottom: 0;
 	}
 
 	.mp-details{
@@ -83,5 +98,56 @@
 	input{
 		max-width: 20em;
 		margin-bottom: 1em;
+	}
+}
+
+.loading .lookup-results:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	width: 1em;
+	height: 1em;
+	background-color: adjust-lightness( $color-grey, -25% );
+	animation: loading-bar 1s linear infinite;
+	animation-delay: 0.25s;
+	margin-top: -1em;
+}
+.lookup-results {
+	overflow: hidden;
+	transition: 0.25s;
+	position: relative;
+	max-height: 0em;
+	padding: 0 1em;
+}
+.loading .lookup-results {
+	padding-top: 1em;
+	background-color: $color-grey;
+}
+.loaded .lookup-results {
+	padding: 1em;
+	max-height: 100em;
+}
+@keyframes loading-bar {
+  0% {
+    left:0%;
+    width:1em;
+  }
+  50%{
+    left: 25%;
+    width: 50%;
+  }
+  100%{
+    left:100%;
+    width:1em;
+  }
+
+}
+
+.ppc-row td{
+	vertical-align: middle;
+
+	input[type="checkbox"]{ 
+		margin: 0;
+		text-align: center;
 	}
 }

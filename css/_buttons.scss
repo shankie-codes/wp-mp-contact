@@ -34,3 +34,27 @@
 	margin: 1em 1em 1em 0;
 }
 
+.start-again{
+	display: none;
+}
+
+.loaded .start-again{
+	display: block;
+}
+
+.loading,.loaded .lookup-mp{
+	// Disable the button if the form is loading or loaded
+	pointer-events: none;
+	opacity: 0.25;
+}
+
+.gform_footer input[type="submit"]{
+	pointer-events: none;
+	opacity: 0.25;
+}
+
+.loaded .gform_footer input[type="submit"]{
+	/* Enable the button if the form has a state 'loaded' */
+	pointer-events: auto;
+	opacity: 1;
+}

@@ -8,4 +8,8 @@ sftp-config.json
 
 page-test.php
 
-*.sublime-project
+*.sublime-projectbower_components/
+node_modules/
+npm-debug.log
+sublime-gulp.log
+.sublime-gulp.cache
